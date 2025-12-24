@@ -184,7 +184,7 @@ export default function AboutPage() {
                 <Link href="https://github.com/SibilSoren" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
                   <Github className="h-4 w-4" /> GitHub
                 </Link>
-                <Link href="mailto:sibil@example.com" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                <Link href="mailto:soren.sibilsarjam@gmail.com" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
                   <Mail className="h-4 w-4" /> Email
                 </Link>
               </div>

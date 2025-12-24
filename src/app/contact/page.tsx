@@ -24,8 +24,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-lg mb-1">Email</h3>
                   <p className="text-muted-foreground mb-2">The best way to reach me.</p>
-                  <a href="mailto:sibil@example.com" className="text-primary font-medium hover:underline flex items-center gap-1">
-                    sibil@example.com <ExternalLink className="h-3 w-3" />
+                  <a href="mailto:soren.sibilsarjam@gmail.com" className="text-primary font-medium hover:underline flex items-center gap-1">
+                    soren.sibilsarjam@gmail.com <ExternalLink className="h-3 w-3" />
                   </a>
                 </div>
               </div>
