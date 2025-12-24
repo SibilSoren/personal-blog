@@ -106,7 +106,7 @@ export default function AboutPage() {
             <div className="bg-primary/10 p-6 rounded-2xl border border-primary/20">
               <h3 className="font-bold mb-4">Connect</h3>
               <div className="flex flex-col gap-3">
-                <Link href="https://linkedin.com" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                <Link href="https://www.linkedin.com/in/sibilsarjamsoren/" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
                   <Linkedin className="h-4 w-4" /> LinkedIn
                 </Link>
                 <Link href="https://github.com/SibilSoren" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">

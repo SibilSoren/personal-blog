@@ -37,7 +37,7 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-lg mb-1">LinkedIn</h3>
                   <p className="text-muted-foreground mb-2">For professional networking.</p>
-                  <Link href="https://linkedin.com" target="_blank" className="text-primary font-medium hover:underline flex items-center gap-1">
+                  <Link href="https://www.linkedin.com/in/sibilsarjamsoren/" target="_blank" className="text-primary font-medium hover:underline flex items-center gap-1">
                     Connect on LinkedIn <ExternalLink className="h-3 w-3" />
                   </Link>
                 </div>
@@ -68,7 +68,7 @@ export default function ContactPage() {
                     <Github className="h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="https://twitter.com" target="_blank">
+                <Link href="https://x.com/sibil_soren_dev" target="_blank">
                   <Button variant="outline" size="icon" className="rounded-full h-12 w-12 hover:bg-primary/10">
                     <Twitter className="h-5 w-5" />
                   </Button>

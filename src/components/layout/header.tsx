@@ -14,8 +14,8 @@ const navItems = [
 ]
 
 const socialLinks = [
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/sibilsarjamsoren/", label: "LinkedIn" },
+  { icon: Twitter, href: "https://x.com/sibil_soren_dev", label: "Twitter" },
   { icon: Github, href: "https://github.com/SibilSoren", label: "GitHub" },
 ]
 
