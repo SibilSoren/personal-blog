@@ -20,13 +20,15 @@ const socialLinks = [
 ]
 
 import { SpotlightSearch } from "@/components/search/spotlight-search"
-import { getAllBlogPosts } from "@/lib/blog"
-
+import { BlogPost } from "@/types/blog"
 import Image from "next/image"
 
-export function Header() {
+interface HeaderProps {
+  posts: BlogPost[]
+}
+
+export function Header({ posts }: HeaderProps) {
   const pathname = usePathname()
-  const posts = getAllBlogPosts()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

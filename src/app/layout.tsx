@@ -20,12 +20,15 @@ export const metadata: Metadata = {
 
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { getAllBlogPosts } from "@/lib/blog";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const posts = getAllBlogPosts();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -36,7 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="relative flex min-h-screen flex-col">
-            <Header />
+            <Header posts={posts} />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
