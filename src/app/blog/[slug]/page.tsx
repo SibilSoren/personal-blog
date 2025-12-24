@@ -5,6 +5,8 @@ import { MDXComponents } from "@/components/mdx/mdx-components"
 import { Container } from "@/components/layout/container"
 import { Badge } from "@/components/ui/badge"
 import remarkGfm from "remark-gfm"
+import rehypeSlug from "rehype-slug"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
 
 interface PostPageProps {
   params: Promise<{
@@ -18,6 +20,8 @@ export async function generateStaticParams() {
     slug: slug.replace(/\.mdx$/, ""),
   }))
 }
+
+import { TableOfContents } from "@/components/blog/toc"
 
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params
@@ -54,27 +58,26 @@ export default async function PostPage({ params }: PostPageProps) {
       </div>
 
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_250px] gap-12">
-          <div className="prose prose-neutral dark:prose-invert max-w-none">
+        <div className="flex flex-col lg:flex-row gap-12 relative">
+          <div className="flex-1 prose prose-neutral dark:prose-invert max-w-none order-2 lg:order-1">
             <MDXRemote 
               source={post.content} 
               components={MDXComponents} 
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm],
+                  rehypePlugins: [
+                    rehypeSlug,
+                    [rehypeAutolinkHeadings, { behavior: "wrap" }]
+                  ],
                 }
               }}
             />
           </div>
           
-          {/* Sidebar / TOC placeholder */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-24">
-              <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-muted-foreground">Table of Contents</h4>
-              {/* TOC logic will go here in a separate component */}
-              <div className="text-sm text-muted-foreground">
-                Coming soon...
-              </div>
+          <aside className="w-full lg:w-[300px] order-1 lg:order-2">
+            <div className="sticky top-24 space-y-8">
+              <TableOfContents content={post.content} />
             </div>
           </aside>
         </div>
