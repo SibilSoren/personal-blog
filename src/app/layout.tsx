@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Sibil Sarjam Soren | Senior Software Engineer",
   description: "Personal blog and portfolio of Sibil Sarjam Soren, Senior Software Engineer at Accenture.",
+  icons: {
+    icon: "/avatar.png",
+  },
 };
 
 import { Header } from "@/components/layout/header";
