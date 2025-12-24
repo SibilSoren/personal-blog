@@ -22,6 +22,8 @@ const socialLinks = [
 import { SpotlightSearch } from "@/components/search/spotlight-search"
 import { getAllBlogPosts } from "@/lib/blog"
 
+import Image from "next/image"
+
 export function Header() {
   const pathname = usePathname()
   const posts = getAllBlogPosts()
@@ -31,8 +33,14 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo/Avatar */}
         <Link href="/" className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center font-bold text-primary-foreground">
-            S
+          <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary">
+            <Image 
+              src="/avatar.png" 
+              alt="Sibil Soren" 
+              width={40} 
+              height={40} 
+              className="object-cover"
+            />
           </div>
           <span className="hidden font-bold sm:inline-block">Sibil Soren</span>
         </Link>
