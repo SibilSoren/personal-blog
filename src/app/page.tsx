@@ -23,7 +23,7 @@ export default function Home() {
               Building software that <span className="text-primary italic">matters.</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              Hi, I'm <span className="text-foreground font-semibold">Sibil Soren</span>. I specialize in building high-performance web applications and scalable architectural solutions. Explore my thoughts on engineering in my blog or learn more about my journey.
+              Hi, I'm <span className="text-foreground font-semibold">Sibil Sarjam Soren</span>. I specialize in building high-performance web applications and scalable architectural solutions. Explore my thoughts on engineering in my blog or learn more about my journey.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button asChild size="lg" className="rounded-full">

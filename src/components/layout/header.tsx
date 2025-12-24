@@ -38,13 +38,13 @@ export function Header({ posts }: HeaderProps) {
           <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary">
             <Image 
               src="/avatar.png" 
-              alt="Sibil Soren" 
+              alt="Sibil Sarjam Soren" 
               width={40} 
               height={40} 
               className="object-cover"
             />
           </div>
-          <span className="hidden font-bold sm:inline-block">Sibil Soren</span>
+          <span className="hidden font-bold sm:inline-block">Sibil Sarjam Soren</span>
         </Link>
 
         {/* Centered Navigation Pill */}

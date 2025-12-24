@@ -39,7 +39,7 @@ export default function AboutPage() {
                 <div className="w-32 h-32 md:w-48 md:h-48 shrink-0 relative rounded-2xl overflow-hidden border-4 border-primary/20 shadow-xl">
                   <Image 
                     src="/avatar.png" 
-                    alt="Sibil Soren" 
+                    alt="Sibil Sarjam Soren" 
                     fill 
                     className="object-cover"
                   />

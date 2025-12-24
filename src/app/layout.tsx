@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sibil Soren | Senior Software Engineer",
-  description: "Personal blog and portfolio of Sibil Soren, Senior Software Engineer at Accenture.",
+  title: "Sibil Sarjam Soren | Senior Software Engineer",
+  description: "Personal blog and portfolio of Sibil Sarjam Soren, Senior Software Engineer at Accenture.",
 };
 
 import { Header } from "@/components/layout/header";

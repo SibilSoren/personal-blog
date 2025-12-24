@@ -1,0 +1,78 @@
+---
+title: "The Distributed Dilemma: Understanding the CAP Theorem"
+description: "Why distributed systems can't have it all, and how to make the right tradeoffs for your application."
+image: "/cap-theorem.png"
+publishedAt: "2025-12-24"
+updatedAt: "2025-12-24"
+author: "Sibil Sarjam Soren"
+isPublished: true
+tags: ["Architecture", "Databases", "Distributed Systems"]
+---
+
+Imagine you're running a global bookstore. You have servers in New York, London, and Tokyo. When someone buys the last copy of a rare book in Tokyo, the servers in New York and London need to know immediately so they don't sell it again. 
+
+But what happens if the network between Tokyo and London breaks? This is the fundamental challenge of distributed systems, and it's perfectly summarized by the **CAP Theorem**.
+
+---
+
+## What is the CAP Theorem?
+
+Proposed by Eric Brewer in 2000, the CAP theorem states that a distributed data store can only provide two of the following three guarantees:
+
+### 1. Consistency (C)
+Every read receives the most recent write or an error. In our bookstore, this means if I update a price in Tokyo, a user in London sees that new price the very next millisecond.
+
+### 2. Availability (A)
+Every request receives a (non-error) response, without the guarantee that it contains the most recent write. In other words, the system is always "up," even if some data is slightly stale.
+
+### 3. Partition Tolerance (P)
+The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes. In the real world, network failures are inevitable—so **Partition Tolerance is a must**.
+
+![CAP Theorem Diagram](/cap-theorem.png)
+
+---
+
+## The "Pick Two" Law
+
+In a perfect world with a 100% reliable network, you could have all three. But since networks *will* fail (a "network partition"), you are forced to choose:
+
+### Case 1: The ATM (Consistency - CP)
+When you go to an ATM to withdraw money, the system must be **Consistent**. If the ATM cannot reach the main bank server to verify your balance due to a network error, it won't just guess. It will say **"Out of Service."**
+
+*   **Tradeoff**: It chooses **Consistency** (preventing double spending) over **Availability** (serving the customer).
+
+### Case 2: Social Media Feeds (Availability - AP)
+When you "like" a post on Instagram or X, the system needs to be **Available**. Even if there's a minor network glitch, the app will show your "like" immediately. It might take a few seconds for that like to sync across the globe, but the app keeps working.
+
+*   **Tradeoff**: It chooses **Availability** (keeping the UI responsive) over **Immediate Consistency**.
+
+---
+
+## Which One Should You Choose?
+
+The choice depends entirely on your use case:
+
+| Use Case | Recommended | Examples |
+| :--- | :--- | :--- |
+| **Financial Systems** | **CP** (Consistency) | SQL Databases (Postgres, MySQL), MongoDB (usually) |
+| **Social Media / Discovery** | **AP** (Availability) | Cassandra, DynamoDB, CouchDB |
+| **Inventory Management** | **CP** (Consistency) | To avoid overselling stock |
+| **Real-time Analytics** | **AP** (Availability) | To keep ingestion fast |
+
+---
+
+## The Modern Reality: PACELC
+
+The CAP theorem is a great starting point, but modern systems often use **Eventual Consistency**. 
+
+The **PACELC theorem** extends CAP by saying: *In case of a Partition (P), choose between Availability (A) and Consistency (C); Else (E), choose between Latency (L) and Consistency (C).*
+
+Essentially, even when the network is fine, we still trade a bit of consistency for better performance (lower latency).
+
+---
+
+## Conclusion
+
+There is no "perfect" database or architecture. Every decision is a tradeoff. As a Senior Software Engineer, your job isn't to find the "best" tool, but the most appropriate tool for the specific constraints of your project.
+
+Are you building a bank or a blog? The answer to that question will tell you exactly where you sit on the CAP triangle.
