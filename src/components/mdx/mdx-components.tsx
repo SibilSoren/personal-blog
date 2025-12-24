@@ -107,7 +107,7 @@ export const MDXComponents = {
   pre: ({ className, ...props }: React.HTMLAttributes<HTMLPreElement>) => (
     <pre
       className={cn(
-        "mb-4 mt-6 overflow-x-auto rounded-lg border bg-muted p-4",
+        "mb-4 mt-6 overflow-x-auto rounded-lg border bg-zinc-950 p-4 font-mono text-sm text-zinc-50 dark:bg-zinc-900",
         className
       )}
       {...props}
@@ -116,7 +116,7 @@ export const MDXComponents = {
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       className={cn(
-        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
+        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-foreground",
         className
       )}
       {...props}
