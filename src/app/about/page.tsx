@@ -7,24 +7,64 @@ import Image from "next/image"
 const experiences = [
   {
     company: "Accenture",
-    role: "Senior Software Engineer",
-    period: "2021 - Present",
-    description: "Leading development of enterprise-scale applications, optimizing performance, and mentoring junior engineers. Specializing in modern React ecosystems and cloud-native solutions.",
-    tags: ["React", "TypeScript", "Node.js", "AWS"]
+    logo: "/logos/accenture.png",
+    roles: [
+      {
+        title: "Senior Software Engineer",
+        period: "2021 - Present",
+        description: "Leading development of enterprise-scale applications, optimizing performance, and mentoring junior engineers. Specializing in modern React ecosystems and cloud-native solutions.",
+        tags: ["React", "TypeScript", "Node.js", "AWS"]
+      }
+    ]
   },
   {
-    company: "Previous Tech Co.",
-    role: "Software Engineer",
-    period: "2018 - 2021",
-    description: "Developed and maintained multiple client-facing applications. Focused on building responsive UI components and integrating complex RESTful APIs.",
-    tags: ["JavaScript", "React", "Redux", "Express"]
+    company: "Team Geek Solutions",
+    logo: "/logos/teamgeek.png",
+    roles: [
+      {
+        title: "Software Developer",
+        period: "Dec 2023 - Nov 2024",
+        description: "Built robust web applications using MongoDB, Express.js, React, and Node.js. Optimized cloud infrastructure on AWS for scalability and cost-efficiency. Spearheaded the development of EvalTech.AI, significantly reducing load times and enhancing user experience through reusable component architecture.",
+        tags: ["Node.js", "AWS", "MongoDB", "Express.js", "System Design"]
+      }
+    ]
+  },
+  {
+    company: "Newgen Software",
+    logo: "/logos/newgen.png",
+    roles: [
+      {
+        title: "Senior Software Design Engineer - 2",
+        period: "Jan 2023 - Dec 2023",
+        description: "Implemented complex state management solutions using Redux API. Focused on optimizing React components to minimize re-renders and improve overall application performance. Mentored junior developers and conducted rigorous code reviews to maintain high quality standards.",
+        tags: ["React.js", "Redux", "Performance Optimization", "Micro-frontends"]
+      },
+      {
+        title: "Software Design Engineer - 1",
+        period: "Jan 2022 - Jan 2023",
+        description: "Collaborated with designers to translate high-fidelity mockups into responsive, interactive UI components. Built modular and reusable libraries to streamline development across multiple projects. Integrated complex backend APIs with frontend services.",
+        tags: ["React.js", "UI/UX", "JavaScript", "API Integration"]
+      }
+    ]
+  },
+  {
+    company: "eClerx",
+    logo: "/logos/eclerx.png",
+    roles: [
+      {
+        title: "Full Stack Developer Intern",
+        period: "Sep 2021 - Jan 2022",
+        description: "Developed a full-stack web application using React, Node.js, Koa.js, and MongoDB. Implemented data visualization dashboards using Chart.js to provide actionable customer insights. Gained hands-on experience with agile development methodologies.",
+        tags: ["Koa.js", "MongoDB", "Chart.js", "Full Stack"]
+      }
+    ]
   }
 ]
 
 const skills = [
   { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux", "Zustand"] },
-  { category: "Backend", items: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Rest API", "GraphQL"] },
-  { category: "Tools & DevOps", items: ["Git", "Docker", "AWS", "Vercel", "Netlify", "CI/CD"] },
+  { category: "Backend", items: ["Node.js", "Express", "Koa.js", "PostgreSQL", "MongoDB", "AWS"] },
+  { category: "Tools & DevOps", items: ["Git", "Docker", "Vercel", "Netlify", "CI/CD", "System Design"] },
 ]
 
 export default function AboutPage() {
@@ -44,16 +84,20 @@ export default function AboutPage() {
                     className="object-cover"
                   />
                 </div>
-                <p className="text-xl text-muted-foreground leading-relaxed italic border-l-4 border-primary pl-6 py-2">
-                  "Senior Software Engineer passionate about building products that are as robust under the hood as they are beautiful on the outside."
-                </p>
+                <div className="space-y-4">
+                  <p className="text-xl text-muted-foreground leading-relaxed italic border-l-4 border-primary pl-6 py-2">
+                    "Senior Software Engineer passionate about scalable backend systems and robust distributed architectures."
+                  </p>
+                  <div className="prose prose-neutral dark:prose-invert max-w-none">
+                    <p>
+                      I'm a Senior Software Engineer with a deep focus on backend development and system design. My expertise spans the entire JavaScript ecosystem, from building high-performance Node.js services to architecting complex cloud solutions on AWS.
+                    </p>
+                  </div>
+                </div>
               </div>
               <div className="prose prose-neutral dark:prose-invert max-w-none text-lg">
                 <p>
-                  I'm a Senior Software Engineer at Accenture with a focus on building exceptional digital experiences. My core expertise lies in the JavaScript/TypeScript ecosystem, particularly focusing on React and Next.js for high-performance frontend solutions and Node.js for scalable backend architectures.
-                </p>
-                <p>
-                  I believe in writing clean, maintainable code and building systems that solve real-world problems effectively. Whether it's architecting a new application from scratch or optimizing legacy systems, I enjoy the challenge of finding the most efficient solutions.
+                   I have extensive experience in building scalable web applications, optimizing database performance, and designing resilient APIs. Whether it's managing cloud infrastructure or implementing efficient state management on the client side, I strive to deliver engineering excellence in every project.
                 </p>
               </div>
             </section>
@@ -63,20 +107,48 @@ export default function AboutPage() {
                 <Briefcase className="h-6 w-6 text-primary" />
                 <h2 className="text-2xl font-bold">Work Experience</h2>
               </div>
-              <div className="space-y-8">
+              <div className="space-y-4">
                 {experiences.map((exp, index) => (
-                  <div key={index} className="relative pl-8 border-l border-muted-foreground/20 last:border-0 pb-8 last:pb-0">
-                    <div className="absolute left-[-5px] top-1 h-[9px] w-[9px] rounded-full bg-primary" />
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
-                      <h3 className="text-xl font-bold">{exp.role}</h3>
-                      <Badge variant="secondary" className="w-fit">{exp.period}</Badge>
+                  <div key={index} className="flex gap-4 md:gap-6">
+                    {/* Company Logo Column */}
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 md:w-14 md:h-14 relative rounded-md overflow-hidden bg-white shadow-sm border shrink-0">
+                         <Image src={exp.logo} alt={exp.company} fill className="object-contain p-1" />
+                      </div>
+                      {/* Vertical line connecting to next company or roles */}
+                      {index !== experiences.length - 1 && (
+                        <div className="w-px h-full bg-border mt-2" />
+                      )}
                     </div>
-                    <p className="text-primary font-medium mb-4">{exp.company}</p>
-                    <p className="text-muted-foreground mb-4 leading-relaxed">{exp.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {exp.tags.map(tag => (
-                        <span key={tag} className="text-[10px] bg-muted px-2 py-1 rounded font-bold text-muted-foreground uppercase">{tag}</span>
-                      ))}
+                
+                    {/* Experience Details Column */}
+                    <div className="flex-1 pb-10">
+                      <h3 className="text-lg font-bold">{exp.company}</h3>
+                      
+                      <div className="mt-4 space-y-8">
+                        {exp.roles.map((role, rIndex) => (
+                          <div key={rIndex} className="relative">
+                            {/* Connector for multi-role companies similar to LinkedIn */}
+                            {exp.roles.length > 1 && rIndex !== exp.roles.length - 1 && (
+                                <div className="absolute left-[calc(-1.5rem-1px)] top-[2.5rem] bottom-[-2rem] w-px bg-border md:left-[calc(-2rem-1px)]" />
+                            )}
+                            {exp.roles.length > 1 && (
+                                <div className="absolute left-[calc(-1.5rem-4px)] top-[0.6rem] w-2 h-2 rounded-full bg-muted-foreground/30 md:left-[calc(-2rem-4px)]" />
+                            )}
+                            
+                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
+                              <h4 className="text-base font-semibold leading-tight">{role.title}</h4>
+                              <span className="text-sm text-muted-foreground shrink-0">{role.period}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{role.description}</p>
+                            <div className="flex flex-wrap gap-2">
+                              {role.tags.map(tag => (
+                                <span key={tag} className="text-[10px] bg-muted px-2 py-0.5 rounded font-medium text-muted-foreground border border-border/50">{tag}</span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -84,7 +156,7 @@ export default function AboutPage() {
             </section>
           </div>
 
-          <aside className="space-y-8">
+          <aside className="space-y-8 sticky top-24 self-start">
             <div className="bg-muted/30 p-6 rounded-2xl border">
               <h3 className="font-bold mb-4 flex items-center gap-2">
                 <Code className="h-4 w-4 text-primary" /> Skills
@@ -95,7 +167,7 @@ export default function AboutPage() {
                     <p className="text-xs uppercase font-bold text-muted-foreground tracking-widest mb-3">{skill.category}</p>
                     <div className="flex flex-wrap gap-2">
                       {skill.items.map(item => (
-                        <Badge key={item} variant="outline" className="bg-background">{item}</Badge>
+                        <Badge key={item} variant="outline" className="bg-background hover:border-primary hover:text-primary transition-colors">{item}</Badge>
                       ))}
                     </div>
                   </div>
