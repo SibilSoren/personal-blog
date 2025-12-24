@@ -1,0 +1,90 @@
+---
+title: "S.O.L.I.D Principles: The Foundation of Clean Code"
+description: "A comprehensive guide to building maintainable and scalable software using the five pillars of object-oriented design."
+image: "/solid-principles.png"
+publishedAt: "2024-12-24"
+updatedAt: "2024-12-24"
+author: "Sibil Sarjam Soren"
+isPublished: true
+tags: ["Architecture", "Design Patterns", "Clean Code", "Engineering"]
+---
+
+Building software is easy. Building software that can change, scale, and be maintained by a team over years is **hard**. 
+
+In the early 2000s, Robert C. Martin (Uncle Bob) introduced five design principles that have since become the bedrock of professional software development. Collectively known as **SOLID**, these principles help developers avoid "code rot" and build systems that are flexible and robust.
+
+---
+
+## 🏗️ What is SOLID?
+
+SOLID is an acronym for five design principles intended to make software designs more understandable, flexible, and maintainable.
+
+![SOLID Principles Overview](/solid-principles.png)
+
+---
+
+## 1. Single Responsibility Principle (SRP)
+> "A class should have one, and only one, reason to change."
+
+This is the most misunderstood principle. It doesn't mean a function should only do one thing; it means a module should be responsible to **one, and only one, actor**. 
+
+If you have a `User` class that handles database persistence, email notifications, and password hashing, you're violating SRP. If the database schema changes, the class changes. If the email provider changes, the class changes. 
+
+**Solution**: Split these into `UserRepository`, `EmailService`, and `PasswordHasher`.
+
+---
+
+## 2. Open-Closed Principle (OCP)
+> "Software entities should be open for extension, but closed for modification."
+
+You should be able to add new functionality without changing existing code. This is usually achieved using **interfaces** or **abstract classes**.
+
+Instead of a giant `switch` statement that checks user roles to calculate discounts, create a `DiscountStrategy` interface. When you need a new discount type, you create a new class that implements the interface. You never touch the core calculation logic again.
+
+---
+
+## 3. Liskov Substitution Principle (LSP)
+> "Objects of a superclass should be replaceable with objects of its subclasses without breaking the application."
+
+If you have a `Bird` class with a `fly()` method, and you create a `Penguin` subclass, you have a problem. A Penguin is a Bird, but it can't fly. Throwing a `NotImplementedError` in `Penguin.fly()` violates LSP because code expecting a Bird will break when it meets a Penguin.
+
+**Key takeaway**: Subtypes must honor the contract of their base types.
+
+---
+
+## 4. Interface Segregation Principle (ISP)
+> "Clients should not be forced to depend upon interfaces that they do not use."
+
+It's better to have many small, specific interfaces than one large, general-purpose one. 
+
+If you have an `IMachine` interface with `print()`, `scan()`, and `fax()`, a simple printer that can't scan is forced to implement a `scan()` method it doesn't need. 
+
+**Solution**: Split it into `IPrinter`, `IScanner`, and `IFax`.
+
+---
+
+## 5. Dependency Inversion Principle (DIP)
+> "Depend upon abstractions, not concretions."
+
+High-level modules should not depend on low-level modules. Both should depend on abstractions.
+
+Instead of your `OrderService` creating a new `SqlConnection` directly, pass an `IDatabase` interface to the constructor. This allows you to swap a SQL database for a MongoDB instance without changing a single line of your business logic. This is also the foundation of **Dependency Injection**.
+
+---
+
+## 💡 Why It Matters
+
+Following SOLID isn't about dogmatism; it's about **reducing the cost of change**.
+
+In a SOLID codebase:
+- **Testing** is easier because components are decoupled.
+- **Debugging** is faster because responsibilities are clear.
+- **New Features** are added by adding code, not rewriting it.
+
+---
+
+## Conclusion
+
+Mastering SOLID takes time and practice. You'll often find yourself in situations where these principles conflict with "getting things done." The secret is to use them as a compass, not a cage. 
+
+Start small: next time you find a class that does too much, try to apply SRP. Your future self (and your teammates) will thank you.
