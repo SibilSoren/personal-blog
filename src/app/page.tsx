@@ -113,18 +113,19 @@ export default function Home() {
           </div>
         </Container>
 
-        <div className="relative">
+        <div className="relative space-y-2 lg:space-y-0">
           {/* Gradient Masks */}
           <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
 
-          <div className="flex animate-marquee w-max py-4">
-            {[...skills, ...skills, ...skills, ...skills].map((skill, index) => (
+          {/* Row 1 - Always Visible */}
+          <div className="flex animate-marquee w-max py-2 md:py-4">
+            {[...skills, ...skills, ...skills].map((skill, index) => (
               <div 
-                key={`${skill.id}-${index}`}
-                className="mx-6 flex items-center gap-4 px-6 py-4 rounded-2xl border bg-background/50 backdrop-blur-sm transition-all hover:scale-110 hover:border-primary/50 group cursor-default shadow-sm"
+                key={`${skill.id}-row1-${index}`}
+                className="mx-3 md:mx-6 flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-4 rounded-2xl border bg-background/50 backdrop-blur-sm transition-all hover:scale-110 hover:border-primary/50 group cursor-default shadow-sm"
               >
-                <div className="relative h-10 w-10 shrink-0">
+                <div className="relative h-7 w-7 md:h-10 md:w-10 shrink-0">
                   <Image
                     src={`https://skillicons.dev/icons?i=${skill.id}`}
                     alt={skill.name}
@@ -133,7 +134,28 @@ export default function Home() {
                     className="object-contain transition-transform group-hover:rotate-12"
                   />
                 </div>
-                <span className="font-bold text-lg text-foreground/80 group-hover:text-primary transition-colors italic">{skill.name}</span>
+                <span className="font-bold text-sm md:text-lg text-foreground/80 group-hover:text-primary transition-colors italic">{skill.name}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Row 2 - Only on Mobile/Tablet */}
+          <div className="flex animate-marquee-reverse w-max py-2 lg:hidden">
+            {[...skills, ...skills, ...skills].reverse().map((skill, index) => (
+              <div 
+                key={`${skill.id}-row2-${index}`}
+                className="mx-3 flex items-center gap-3 px-4 py-3 rounded-2xl border bg-background/50 backdrop-blur-sm transition-all hover:scale-110 hover:border-primary/50 group cursor-default shadow-sm"
+              >
+                <div className="relative h-7 w-7 shrink-0">
+                  <Image
+                    src={`https://skillicons.dev/icons?i=${skill.id}`}
+                    alt={skill.name}
+                    fill
+                    unoptimized
+                    className="object-contain transition-transform group-hover:rotate-12"
+                  />
+                </div>
+                <span className="font-bold text-sm text-foreground/80 group-hover:text-primary transition-colors italic">{skill.name}</span>
               </div>
             ))}
           </div>
