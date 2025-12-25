@@ -4,7 +4,25 @@ import { getAllBlogPosts } from "@/lib/blog";
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Code, Briefcase, GraduationCap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+
+const skills = [
+  { name: "Java", id: "java" },
+  { name: "Spring Boot", id: "spring" },
+  { name: "NestJS", id: "nestjs" },
+  { name: "Node.js", id: "nodejs" },
+  { name: "Kafka", id: "kafka" },
+  { name: "PostgreSQL", id: "postgres" },
+  { name: "Redis", id: "redis" },
+  { name: "React", id: "react" },
+  { name: "Next.js", id: "nextjs" },
+  { name: "TypeScript", id: "ts" },
+  { name: "AWS", id: "aws" },
+  { name: "Docker", id: "docker" },
+  { name: "Kubernetes", id: "kubernetes" },
+  { name: "Terraform", id: "terraform" },
+];
 
 export default function Home() {
   const allPosts = getAllBlogPosts();
@@ -83,44 +101,42 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Quick Skills/About Preview */}
-      <section className="bg-muted/30 py-20">
+      {/* Skills Marquee Section */}
+      <section className="bg-muted/30 py-24 overflow-hidden border-y border-muted-foreground/5">
         <Container>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Mastering the stack.</h2>
-              <p className="text-muted-foreground mb-8 text-lg">
-                With years of experience in the industry, I've developed a deep understanding of modern web technologies and best practices in software architecture.
-              </p>
-              <div className="space-y-4">
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1 bg-primary/20 p-2 rounded-lg">
-                    <Code className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold">Full Stack Excellence</h3>
-                    <p className="text-sm text-muted-foreground">React, Next.js, Node.js, and TypeScript specialist.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1 bg-primary/20 p-2 rounded-lg">
-                    <Briefcase className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold">Enterprise Experience</h3>
-                    <p className="text-sm text-muted-foreground">Scaling systems and leading teams at Accenture.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="relative aspect-square bg-gradient-to-br from-primary/20 to-transparent rounded-2xl border border-primary/10 flex items-center justify-center overflow-hidden">
-               <div className="text-8xl font-black text-primary/10 select-none">ENGINEER</div>
-               <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-4xl font-bold text-primary-foreground">SS</div>
-               </div>
-            </div>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">Mastering the stack.</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              A curated collection of technologies I use to build high-performance, enterprise-scale applications and distributed systems.
+            </p>
           </div>
         </Container>
+
+        <div className="relative">
+          {/* Gradient Masks */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
+
+          <div className="flex animate-marquee w-max py-4">
+            {[...skills, ...skills, ...skills, ...skills].map((skill, index) => (
+              <div 
+                key={`${skill.id}-${index}`}
+                className="mx-6 flex items-center gap-4 px-6 py-4 rounded-2xl border bg-background/50 backdrop-blur-sm transition-all hover:scale-110 hover:border-primary/50 group cursor-default shadow-sm"
+              >
+                <div className="relative h-10 w-10 shrink-0">
+                  <Image
+                    src={`https://skillicons.dev/icons?i=${skill.id}`}
+                    alt={skill.name}
+                    fill
+                    unoptimized
+                    className="object-contain transition-transform group-hover:rotate-12"
+                  />
+                </div>
+                <span className="font-bold text-lg text-foreground/80 group-hover:text-primary transition-colors italic">{skill.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     </div>
   );
