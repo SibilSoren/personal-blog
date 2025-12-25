@@ -1,6 +1,6 @@
 import { Container } from "@/components/layout/container"
 import { Button } from "@/components/ui/button"
-import { Mail, Linkedin, Twitter, Github, MapPin, ExternalLink } from "lucide-react"
+import { Mail, Linkedin, Twitter, Github, MapPin, ExternalLink, MessageSquare } from "lucide-react"
 import Link from "next/link"
 
 export default function ContactPage() {
@@ -49,17 +49,22 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Location</h3>
-                  <p className="text-muted-foreground">Based in India, working globally.</p>
+                  <p className="text-muted-foreground">Based in Kolkata, India, working globally.</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-muted/30 p-8 rounded-2xl border border-muted-foreground/10 flex flex-col justify-center items-center text-center">
-              <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                 <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="relative overflow-hidden bg-muted/30 p-8 rounded-2xl border border-muted-foreground/10 flex flex-col justify-center items-center text-center">
+              {/* Decorative Background Gradient */}
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+
+              <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center mb-6 border border-primary/20 shadow-inner">
+                 <div className="absolute inset-0 bg-primary/10 rounded-full animate-ping opacity-20" />
+                 <MessageSquare className="h-10 w-10 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Let's create something great.</h3>
-              <p className="text-muted-foreground mb-8">
+              <h3 className="text-2xl font-bold mb-4 relative z-10">Let's create something great.</h3>
+              <p className="text-muted-foreground mb-8 relative z-10">
                 Currently taking on new projects and looking for interesting collaborations.
               </p>
               <div className="flex gap-4">
