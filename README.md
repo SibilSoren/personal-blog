@@ -7,6 +7,7 @@ A modern, high-performance personal blog and portfolio website built with the la
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
 - **Library**: [React 19](https://react.dev/)
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) with modern CSS variables and glassmorphism
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
 - **Icons**: [SkillIcons](https://skillicons.dev/) & [Lucide React](https://lucide.dev/)
 - **Content**: [MDX](https://mdxjs.com/) (next-mdx-remote) for blog posts
 - **Fonts**: [Geist Sans & Mono](https://vercel.com/font)
