@@ -60,8 +60,21 @@ html {
     to { transform: translateX(0); }
   }
 
-  --animate-marquee: marquee 30s linear infinite;
-  --animate-marquee-reverse: marquee-reverse 30s linear infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
+}
+
+.animate-marquee, 
+.animate-marquee-reverse {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
+}
+
+.animate-marquee > div,
+.animate-marquee-reverse > div {
+  transform: translateZ(0); /* Force GPU for each item */
 }
 
 :root {

@@ -120,7 +120,7 @@ export default function Home() {
 
           {/* Row 1 - Always Visible */}
           <div className="flex animate-marquee w-max py-2 md:py-4">
-            {[...skills, ...skills, ...skills].map((skill, index) => (
+            {[...skills, ...skills].map((skill, index) => (
               <div 
                 key={`${skill.id}-row1-${index}`}
                 className="mx-3 md:mx-6 flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-4 rounded-2xl border bg-background/50 backdrop-blur-sm transition-all hover:scale-110 hover:border-primary/50 group cursor-default shadow-sm"
@@ -141,7 +141,7 @@ export default function Home() {
 
           {/* Row 2 - Only on Mobile/Tablet */}
           <div className="flex animate-marquee-reverse w-max py-2 lg:hidden">
-            {[...skills, ...skills, ...skills].reverse().map((skill, index) => (
+            {[...skills, ...skills].reverse().map((skill, index) => (
               <div 
                 key={`${skill.id}-row2-${index}`}
                 className="mx-3 flex items-center gap-3 px-4 py-3 rounded-2xl border bg-background/50 backdrop-blur-sm transition-all hover:scale-110 hover:border-primary/50 group cursor-default shadow-sm"
