@@ -14,6 +14,7 @@ const skills = [
   { name: "Node.js", id: "nodejs" },
   { name: "Kafka", id: "kafka" },
   { name: "PostgreSQL", id: "postgres" },
+  { name: "MongoDB", id: "mongodb" },
   { name: "Redis", id: "redis" },
   { name: "React", id: "react" },
   { name: "Next.js", id: "nextjs" },

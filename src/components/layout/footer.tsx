@@ -57,7 +57,7 @@ export function Footer() {
             </div>
             
             <Link 
-              href="/" 
+              href="/sitemap.xml" 
               className="hover:text-zinc-100 transition-colors order-1 md:order-2 underline underline-offset-4 decoration-zinc-800"
             >
               sitemap.xml
