@@ -11,9 +11,9 @@ const experiences = [
     roles: [
       {
         title: "Senior Software Engineer",
-        period: "2021 - Present",
-        description: "Leading development of enterprise-scale applications, optimizing performance, and mentoring junior engineers. Specializing in modern React ecosystems and cloud-native solutions.",
-        tags: ["React", "TypeScript", "Node.js", "AWS"]
+        period: "Nov 2024 - Present",
+        description: "Leading development of enterprise-scale applications in the Financial and Energy service domains. Architecting robust backend systems using Java Spring Boot and NestJS. Leveraging Kafka for distributed messaging and Splunk for advanced monitoring and observability.",
+        tags: ["Java", "Spring Boot", "NestJS", "Kafka", "Splunk", "AWS", "TypeScript"]
       }
     ]
   },
@@ -62,9 +62,9 @@ const experiences = [
 ]
 
 const skills = [
+  { category: "Backend", items: ["Java", "Spring Boot", "NestJS", "Node.js", "Express", "PostgreSQL", "Kafka", "Redis"] },
   { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux", "Zustand"] },
-  { category: "Backend", items: ["Node.js", "Express", "Koa.js", "PostgreSQL", "MongoDB", "AWS"] },
-  { category: "Tools & DevOps", items: ["Git", "Docker", "Vercel", "Netlify", "CI/CD", "System Design"] },
+  { category: "Tools & DevOps", items: ["AWS", "Docker", "Splunk", "Git", "CI/CD", "System Design"] },
 ]
 
 export default function AboutPage() {
@@ -90,7 +90,7 @@ export default function AboutPage() {
                   </p>
                   <div className="prose prose-neutral dark:prose-invert max-w-none">
                     <p>
-                      I'm a Senior Software Engineer with a deep focus on backend development and system design. My expertise spans the entire JavaScript ecosystem, from building high-performance Node.js services to architecting complex cloud solutions on AWS.
+                      I'm a Senior Software Engineer with a deep focus on backend development and distributed systems. My expertise spans a wide range of technologies, from architecting scalable Java Spring Boot and NestJS services to designing complex cloud solutions on AWS.
                     </p>
                   </div>
                 </div>

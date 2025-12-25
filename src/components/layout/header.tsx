@@ -42,29 +42,30 @@ export function Header({ posts }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Logo/Avatar */}
-        <Link href="/" className="flex items-center space-x-2 z-50 relative" onClick={() => setMobileMenuOpen(false)}>
-          <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary">
-            <Image 
-              src="/avatar.png" 
-              alt="Sibil Sarjam Soren" 
-              width={40} 
-              height={40} 
-              className="object-cover"
-            />
-          </div>
-          <span className="hidden font-bold sm:inline-block">Sibil Sarjam Soren</span>
-        </Link>
+        <div className="flex-1 flex justify-start items-center overflow-hidden">
+          <Link href="/" className="flex items-center space-x-2 z-50 relative shrink-0" onClick={() => setMobileMenuOpen(false)}>
+            <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary">
+              <Image 
+                src="/avatar.png" 
+                alt="Sibil Sarjam Soren" 
+                width={40} 
+                height={40} 
+                className="object-cover"
+              />
+            </div>
+            <span className="hidden font-bold sm:inline-block truncate">Sibil Sarjam Soren</span>
+          </Link>
+        </div>
 
-        {/* Centered Navigation Pill (Desktop) */}
-        <nav className="absolute left-1/2 -translate-x-1/2 hidden lg:block">
+        {/* Navigation Pill (Desktop) */}
+        <nav className="hidden lg:flex items-center justify-center px-4">
           <div className="flex items-center space-x-1 rounded-full border bg-muted/50 p-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors hover:text-primary",
+                  "relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors hover:text-primary whitespace-nowrap",
                   pathname === item.href
                     ? "bg-background text-primary shadow-sm"
                     : "text-muted-foreground"
@@ -76,8 +77,7 @@ export function Header({ posts }: HeaderProps) {
           </div>
         </nav>
 
-        {/* Right side: Search, Theme Toggle & Socials */}
-        <div className="flex items-center gap-4">
+        <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4">
           <SpotlightSearch posts={posts} />
           
           <div className="h-6 w-px bg-border hidden sm:block" />
