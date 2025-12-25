@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sibil Sarjam Soren | Personal Blog & Portfolio
 
-## Getting Started
+A modern, high-performance personal blog and portfolio website built with the latest web technologies.
 
-First, run the development server:
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) with modern CSS variables and glassmorphism
+- **Icons**: [SkillIcons](https://skillicons.dev/) & [Lucide React](https://lucide.dev/)
+- **Content**: [MDX](https://mdxjs.com/) (next-mdx-remote) for blog posts
+- **Fonts**: [Geist Sans & Mono](https://vercel.com/font)
+- **Animations**: Custom CSS Marquee & Lucide micro-animations
+
+## ✨ Features
+
+- **Dynamic Rolling Skills**: An infinite horizontal marquee showcasing technical expertise.
+- **Premium Design**: Sleek dark mode, subtle gradients, and glassmorphism effects.
+- **Responsive Layout**: Optimized for all devices with a custom mobile menu.
+- **Blog Engine**: Fast, MDX-powered blog for sharing technical insights.
+- **Contact Me**: A professional contact section with pulsing calls-to-action.
+
+## 🛠️ Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📄 License & Contribution
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project is **free to use** for anyone looking to build their own portfolio! Personalize it, tweak it, and make it your own.
 
-## Learn More
+If you find this project helpful or use it as a base for your own site, **I would appreciate a ⭐ on GitHub!** It means a lot and helps me grow.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with ❤️ by [Sibil Sarjam Soren](https://www.linkedin.com/in/sibilsarjamsoren/)
