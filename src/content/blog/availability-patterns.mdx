@@ -1,0 +1,117 @@
+---
+title: "Staying Online: A Guide to Availability Patterns"
+description: "How to design highly available systems using fail-over and replication techniques, including uptime calculations and real-world examples."
+image: "/availability_patterns.png"
+publishedAt: "2025-12-25"
+updatedAt: "2025-12-25"
+author: "Sibil Sarjam Soren"
+isPublished: true
+tags: ["Architecture", "High Availability", "Distributed Systems", "SRE"]
+---
+
+In the world of distributed systems, "down" is the four-letter word every engineer fears. Whether you're building a simple app or a massive microservices architecture, ensuring your service is reachable when users need it is paramount.
+
+High Availability (HA) isn't just a buzzword; it's a design requirement. To achieve it, we primarily use two complementary patterns: **Fail-over** and **Replication**.
+
+<img src="/availability_patterns.png" alt="Availability Patterns" width="600" style={{ borderRadius: '8px', margin: '2rem auto', display: 'block' }} />
+
+---
+
+## 1. Fail-over Patterns
+
+Fail-over is the process of automatically switching to a redundant or standby computer server, system, hardware component, or network upon the failure or abnormal termination of the previously active application, server, system, hardware component, or network.
+
+### Active-Passive (Master-Slave)
+In an active-passive configuration, heartbeats are sent between the active server and the passive (standby) server. If the heartbeat is interrupted, the passive server assumes the active's IP address and resumes service.
+
+*   **Hot Standby**: The passive server is already running and ready to take over immediately.
+*   **Cold Standby**: The passive server needs to be started up before it can handle traffic, leading to longer downtime.
+
+> [!NOTE]
+> Only the active server handles traffic. The passive server sits idle until a failure occurs.
+
+### Active-Active (Master-Master)
+In an active-active setup, both servers manage traffic simultaneously, spreading the load between them.
+
+*   **Public-facing**: Use DNS Load Balancing (like Round Robin) to distribute traffic.
+*   **Internal-facing**: Application logic or an internal load balancer must be aware of both servers.
+
+### The Tradeoffs of Fail-over
+While fail-over increases reliability, it comes with costs:
+*   **Hardware Cost**: You need at least double the hardware for the same capacity.
+*   **Complexity**: Managing heartbeats and state transitions is non-trivial.
+*   **Potential Data Loss**: If the active system fails before data is replicated, that data might be lost forever.
+
+---
+
+## 2. Replication Patterns
+
+Replication involves copying data across multiple servers so that if one fails, the data remains accessible.
+
+*   **Master-Slave Replication**: One node (the Master) handles writes, while others (Slaves) replicate data from the Master and handle reads.
+*   **Master-Master Replication**: All nodes can handle both reads and writes, synchronizing data among themselves.
+
+---
+
+## 3. Availability in Numbers
+
+Availability is quantified by **uptime**—the percentage of time a service is operational. We often talk about the "Number of 9s."
+
+| Uptime % | "9s" | Yearly Downtime | Weekly Downtime |
+| :--- | :--- | :--- | :--- |
+| **99.9%** | Three 9s | 8h 45min 57s | 10m 4.8s |
+| **99.99%** | Four 9s | 52min 35.7s | 1m 5s |
+| **99.999%** | Five 9s | 5min 15.6s | 6s |
+
+---
+
+## 4. Sequential vs. Parallel Availability
+
+This is where the math gets interesting. How does adding components affect your overall uptime?
+
+### Components in Sequence (The Chain)
+If your service requires *everything* to be up (e.g., Load Balancer → Web Server → Database), the overall availability **decreases**.
+
+**Formula**: A(total) = A1 × A2 × ... × An
+
+**Example**:
+If a Database (99.9%) and an API (99.9%) are in sequence:
+0.999 × 0.999 = 0.998001 (**99.8%**)
+
+*Your system is now less available than its weakest link!*
+
+### Components in Parallel (Redundancy)
+If your system can function if *either* component is up (e.g., two servers behind a Load Balancer), the overall availability **increases**.
+
+**Formula**: A(total) = 1 - (1 - A1) × (1 - A2)
+
+**Example**:
+Two identical servers, each with 99.9% availability:
+1 - (0.001 × 0.001) = 1 - 0.000001 = 0.999999 (**99.9999%**)
+
+*Redundancy turns three 9s into six 9s!*
+
+---
+
+## 5. Real-World Use Cases
+
+### Scenario A: The E-commerce Checkout
+**Goal**: Prevent double-spending and ensure stock accuracy.
+**Pattern**: **Active-Passive Fail-over with Synchronous Replication**.
+We prioritize consistency. If the master database fails, we fail over to a "Hot" passive node that is perfectly in sync.
+
+### Scenario B: Content Delivery Network (CDN)
+**Goal**: Serve images and videos as fast as possible globally.
+**Pattern**: **Active-Active Replication**.
+If one edge server in London goes down, the DNS routes the user to another functional server in Paris. A small delay in updating an image across nodes is acceptable (Availability > Consistency).
+
+---
+
+## Conclusion
+
+Understanding these patterns allows you to make informed decisions about your architecture. Remember:
+1.  **Redundancy** is the key to high availability.
+2.  **Parallel systems** boost uptime; **sequential systems** drag it down.
+3.  Choose the pattern that matches your application's risk profile and budget.
+
+Are you designing for three 9s or five? The math will guide your architecture.
