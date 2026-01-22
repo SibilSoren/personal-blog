@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { projects } from "@/content/projects";
 
 const skills = [
   { name: "Java", id: "java" },
@@ -93,6 +94,49 @@ export default function Home() {
                         day: "numeric",
                         year: "numeric",
                       })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Featured Projects */}
+      <section className="bg-muted/10 py-10">
+        <Container>
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl font-bold tracking-tight">Featured Projects</h2>
+            <Link href="/projects" className="text-primary hover:underline flex items-center gap-1 font-medium">
+              See all projects <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {projects.filter(p => p.featured).slice(0, 3).map((project) => (
+              <Link key={project.title} href="/projects" className="group">
+                <Card className="h-full border-muted-foreground/10 hover:border-primary/50 transition-all hover:translate-y-[-4px] shadow-none bg-background/50 backdrop-blur-sm overflow-hidden border-2">
+                  <div className="aspect-video bg-muted/20 flex items-center justify-center border-b border-muted-foreground/10 group-hover:bg-primary/5 transition-colors relative">
+                    <project.icon className="h-12 w-12 text-muted-foreground/30 group-hover:text-primary transition-colors duration-500" />
+                  </div>
+                  <CardHeader className="pb-4">
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {project.tech.slice(0, 3).map((t) => (
+                        <span key={t} className="text-[10px] uppercase font-bold tracking-wider text-primary/70">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    <CardTitle className="group-hover:text-primary transition-colors">
+                      {project.title}
+                    </CardTitle>
+                    <CardDescription className="line-clamp-2 mt-2">
+                      {project.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center text-sm font-bold text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
+                      Architecture Details <ArrowRight className="ml-2 h-4 w-4" />
                     </div>
                   </CardContent>
                 </Card>
