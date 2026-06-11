@@ -1,4 +1,4 @@
-import { Code2, Smartphone, Globe, Layers, Zap, Database } from "lucide-react"
+import { Code2, Smartphone, Globe, Layers, Zap, Database, Shield, Terminal } from "lucide-react"
 
 export interface Project {
   title: string
@@ -13,6 +13,38 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    title: "Gatekeeper: Express Rate Limiter",
+    description: "A production-grade, distributed rate limiting middleware for Express APIs.",
+    longDescription: "Engineered a distributed, Redis-backed rate limiting middleware for Express APIs. Supports Fixed Window, Sliding Window, and Token Bucket algorithms with atomic Lua script operations to prevent race conditions.",
+    tech: ["TypeScript", "Express", "Redis", "Lua"],
+    architecture: [
+      "Distributed Architecture",
+      "Atomic Lua Scripts",
+      "Fail-open Design",
+      "Zero-dependency fallback"
+    ],
+    github: "https://github.com/SibilSoren/gatekeeper",
+    demo: "https://sibilsoren.github.io/gatekeeper/",
+    icon: Shield,
+    featured: true,
+  },
+  {
+    title: "create-api-starterkit",
+    description: "A CLI tool to instantly scaffold scalable, production-ready Node.js backends.",
+    longDescription: "Architected a reusable backend template from scratch using TypeScript and Express. It reduces initial project setup time by over 50% by pre-configuring enterprise patterns, Swagger docs, and dockerized deployments.",
+    tech: ["Node.js", "TypeScript", "Express", "Docker"],
+    architecture: [
+      "CLI Scaffolding",
+      "Structured Logging",
+      "Centralized Error Handling",
+      "Zod Validation"
+    ],
+    github: "https://github.com/SibilSoren/create-api-starterkit",
+    demo: "https://sibilsoren.github.io/create-api-starterkit/",
+    icon: Terminal,
+    featured: true,
+  },
   {
     title: "SagaFlow: Distributed Orchestrator",
     description: "A high-performance event-driven engine managing multi-service transactions with eventual consistency.",
