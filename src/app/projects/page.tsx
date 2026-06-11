@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Github, ExternalLink, MoveRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { projects } from "@/content/projects";
 
 export default function ProjectsPage() {
@@ -28,8 +29,12 @@ export default function ProjectsPage() {
               <div className="flex flex-col lg:flex-row gap-8 items-start">
                 {/* Visual Icon Side */}
                 <div className="w-full lg:w-1/3 aspect-video lg:aspect-square bg-muted/20 border border-muted-foreground/10 rounded-2xl flex items-center justify-center group-hover:border-primary/50 transition-all overflow-hidden relative">
-                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                   <project.icon className="w-20 h-20 text-muted-foreground/40 group-hover:text-primary group-hover:scale-110 transition-all duration-500" />
+                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
+                   {project.image ? (
+                     <Image src={project.image} alt={project.title} fill unoptimized className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                   ) : (
+                     <project.icon className="w-20 h-20 text-muted-foreground/40 group-hover:text-primary group-hover:scale-110 transition-all duration-500 relative z-10" />
+                   )}
                 </div>
 
                 {/* Content Side */}

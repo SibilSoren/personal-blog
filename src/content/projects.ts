@@ -9,6 +9,7 @@ export interface Project {
   github?: string
   demo?: string
   icon: any
+  image?: string
   featured: boolean
 }
 
@@ -27,6 +28,7 @@ export const projects: Project[] = [
     github: "https://github.com/SibilSoren/gatekeeper",
     demo: "https://sibilsoren.github.io/gatekeeper/",
     icon: Shield,
+    image: "/images/gatekeeper-thumb.png",
     featured: true,
   },
   {
@@ -43,6 +45,7 @@ export const projects: Project[] = [
     github: "https://github.com/SibilSoren/create-api-starterkit",
     demo: "https://sibilsoren.github.io/create-api-starterkit/",
     icon: Terminal,
+    image: "/images/starterkit-thumb.png",
     featured: true,
   },
   {

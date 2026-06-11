@@ -116,8 +116,12 @@ export default function Home() {
             {projects.filter(p => p.featured).slice(0, 3).map((project) => (
               <Link key={project.title} href="/projects" className="group">
                 <Card className="h-full border-muted-foreground/10 hover:border-primary/50 transition-all hover:translate-y-[-4px] shadow-none bg-background/50 backdrop-blur-sm overflow-hidden border-2">
-                  <div className="aspect-video bg-muted/20 flex items-center justify-center border-b border-muted-foreground/10 group-hover:bg-primary/5 transition-colors relative">
-                    <project.icon className="h-12 w-12 text-muted-foreground/30 group-hover:text-primary transition-colors duration-500" />
+                  <div className="aspect-video bg-muted/20 flex items-center justify-center border-b border-muted-foreground/10 group-hover:bg-primary/5 transition-colors relative overflow-hidden">
+                    {project.image ? (
+                      <Image src={project.image} alt={project.title} fill unoptimized className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                    ) : (
+                      <project.icon className="h-12 w-12 text-muted-foreground/30 group-hover:text-primary transition-colors duration-500 relative z-10" />
+                    )}
                   </div>
                   <CardHeader className="pb-4">
                     <div className="flex flex-wrap gap-2 mb-3">
