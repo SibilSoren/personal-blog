@@ -4,7 +4,7 @@ import { getAllBlogPosts } from "@/lib/blog";
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Youtube } from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/content/projects";
 
@@ -53,6 +53,11 @@ export default function Home() {
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full">
                 <Link href="/about">About Me</Link>
+              </Button>
+              <Button asChild variant="secondary" size="lg" className="rounded-full bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20">
+                <Link href="https://www.youtube.com/@CodewithSibil" target="_blank">
+                  <Youtube className="mr-2 h-5 w-5" /> YouTube Channel
+                </Link>
               </Button>
             </div>
           </div>

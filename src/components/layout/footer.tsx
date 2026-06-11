@@ -2,12 +2,13 @@ import Link from "next/link"
 import { Container } from "./container"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Github, Linkedin, Twitter, Heart } from "lucide-react"
+import { Github, Linkedin, Twitter, Youtube, Heart } from "lucide-react"
 
 const socialLinks = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/sibilsarjamsoren/", label: "LinkedIn" },
   { icon: Twitter, href: "https://x.com/sibil_soren_dev", label: "Twitter" },
   { icon: Github, href: "https://github.com/SibilSoren", label: "GitHub" },
+  { icon: Youtube, href: "https://www.youtube.com/@CodewithSibil", label: "YouTube" },
 ]
 
 export function Footer() {

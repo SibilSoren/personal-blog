@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ModeToggle } from "@/components/mode-toggle"
 import { cn } from "@/lib/utils"
-import { Github, Linkedin, Twitter, Menu, X } from "lucide-react"
+import { Github, Linkedin, Twitter, Youtube, Menu, X } from "lucide-react"
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -18,6 +18,7 @@ const socialLinks = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/sibilsarjamsoren/", label: "LinkedIn" },
   { icon: Twitter, href: "https://x.com/sibil_soren_dev", label: "Twitter" },
   { icon: Github, href: "https://github.com/SibilSoren", label: "GitHub" },
+  { icon: Youtube, href: "https://www.youtube.com/@CodewithSibil", label: "YouTube" },
 ]
 
 import { SpotlightSearch } from "@/components/search/spotlight-search"
