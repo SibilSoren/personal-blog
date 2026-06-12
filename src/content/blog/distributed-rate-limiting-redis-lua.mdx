@@ -1,0 +1,115 @@
+---
+title: "Designing a Distributed Rate Limiter with Redis Lua Scripts"
+description: "Why single-server rate limiting fails in production, and how to build a resilient, distributed rate limiter using Express, Redis, and Lua."
+image: "/images/gatekeeper-thumb.png"
+publishedAt: "2026-06-12"
+updatedAt: "2026-06-12"
+author: "Sibil Sarjam Soren"
+isPublished: true
+tags: ["Architecture", "Node.js", "Redis", "Distributed Systems"]
+---
+
+Rate limiting is one of those features that seems trivial on the surface. If you're building a side project on a single Express server, an in-memory array or `Map` is all you need to track IPs and block them when they exceed the limit.
+
+But what happens when your application scales to multiple servers behind a load balancer? 
+
+Suddenly, your simple in-memory map fails. If User A hits Server 1, their request count increments. But their next request might hit Server 2, which has no knowledge of the previous request. This allows users to easily bypass your rate limits.
+
+This is exactly why I built [Gatekeeper](https://github.com/SibilSoren/gatekeeper)—a production-grade, distributed rate limiting middleware for Express APIs. In this post, we'll dive into how to solve the distributed rate limiting problem using Redis and Lua scripts.
+
+---
+
+## The Algorithms
+
+Before we touch the database, we need to decide *how* we want to limit traffic. Gatekeeper supports three distinct algorithms:
+
+### 1. Fixed Window
+The simplest approach. We define a time window (e.g., 1 minute) and a limit (e.g., 100 requests). We increment a counter for each request. When the minute is up, the counter resets. 
+* **The Problem**: The "edge effect". A user can send 100 requests at 12:00:59 and another 100 requests at 12:01:01, resulting in 200 requests within a two-second span.
+
+### 2. Sliding Window Counter
+A hybrid approach that tracks the number of requests in the previous window and the current window, using a weighted average based on the current timestamp. It smooths out the traffic spikes seen in Fixed Window and uses less memory than tracking every single request timestamp.
+
+### 3. Token Bucket
+Imagine a bucket holding 100 tokens. Every request removes a token. If the bucket is empty, the request is dropped. A background process refills the bucket at a constant rate. This is excellent for allowing short bursts of traffic while enforcing an overall sustained rate.
+
+---
+
+## The Distributed Solution: Redis
+
+To solve the multi-server problem, we need a centralized state store. Redis is the industry standard for this due to its incredibly fast in-memory operations.
+
+However, moving the counter to Redis introduces a new, dangerous problem: **Race Conditions**.
+
+Imagine two requests from the same IP hitting your servers at the exact same millisecond.
+1. Server 1 reads the Redis key: `count = 99`
+2. Server 2 reads the Redis key: `count = 99`
+3. Server 1 increments the count and writes: `count = 100`
+4. Server 2 increments the count and writes: `count = 100`
+
+Both requests are allowed, but the actual count is now incorrect. To fix this, the read and write operations must be **atomic**.
+
+---
+
+## Guaranteeing Atomicity with Lua Scripts
+
+Redis allows us to execute Lua scripts directly on the Redis server. The magic of Redis Lua scripts is that they are executed atomically—no other Redis commands can run while a script is executing.
+
+Here is a simplified version of the Fixed Window Lua script used in Gatekeeper:
+
+```lua
+-- KEYS[1] = "rate_limit:192.168.1.1"
+-- ARGV[1] = 100 (limit)
+-- ARGV[2] = 60 (window in seconds)
+
+local current = redis.call('GET', KEYS[1])
+
+if current and tonumber(current) >= tonumber(ARGV[1]) then
+    -- Limit exceeded
+    return { tonumber(current), 0 } 
+end
+
+-- Increment the counter
+current = redis.call('INCR', KEYS[1])
+
+-- If it's a new window, set the expiration
+if current == 1 then
+    redis.call('EXPIRE', KEYS[1], ARGV[2])
+end
+
+-- Return the current count and success flag
+return { current, 1 }
+```
+
+By pushing this logic into a Lua script, we combine the `GET`, `INCR`, and `EXPIRE` commands into a single, indivisible operation. Race conditions are completely eliminated, no matter how many servers are hitting Redis simultaneously.
+
+---
+
+## Designing for Failure: The "Fail-Open" Architecture
+
+When building infrastructure, you must assume dependencies will fail. If your Redis cluster goes down, what happens to your API?
+
+If your rate limiter is built poorly, a Redis failure will cause all requests to fail, bringing down your entire application. This is unacceptable for mission-critical systems.
+
+Gatekeeper is designed with a **fail-open** architecture. If the Redis connection times out or throws an error, Gatekeeper automatically logs the error and allows the request to proceed. It also seamlessly falls back to an in-memory `Map` mechanism until Redis comes back online.
+
+```typescript
+try {
+  const result = await redis.eval(luaScript, 1, ipKey, limit, windowSize);
+  // Process result...
+} catch (error) {
+  logger.error('Redis rate limiter failed, failing open', error);
+  // Fallback to local memory limiter
+  return fallbackLimiter(req, res, next);
+}
+```
+
+This ensures that your users can continue using your app even if your rate limiting infrastructure is temporarily degraded.
+
+---
+
+## Conclusion
+
+Building a distributed rate limiter requires understanding the tradeoffs between different algorithms and mastering atomic operations. By combining Express, Redis, and Lua scripts, we can build a highly resilient system capable of protecting production APIs from abuse.
+
+If you're building a Node.js API, feel free to check out [Gatekeeper on GitHub](https://github.com/SibilSoren/gatekeeper) and drop a star if you find the source code helpful!
