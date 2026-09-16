@@ -13,11 +13,48 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://sibilsarjamsoren.in";
+const SITE_TITLE = "Sibil Sarjam Soren | Backend Engineer";
+const SITE_DESCRIPTION =
+  "Backend engineer writing about distributed systems, Node.js and TypeScript — CAP theorem, availability patterns, caching and API design.";
+
 export const metadata: Metadata = {
-  title: "Sibil Sarjam Soren | Senior Software Engineer",
-  description: "Personal blog and portfolio of Sibil Sarjam Soren, Senior Software Engineer at Accenture.",
+  // metadataBase lets Next resolve the relative image paths below into the
+  // absolute URLs that Open Graph requires.
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: "%s | Sibil Sarjam Soren",
+  },
+  description: SITE_DESCRIPTION,
   icons: {
     icon: "/avatar.png",
+  },
+  // Without openGraph/twitter, every share of this site on LinkedIn, Twitter,
+  // WhatsApp or Slack renders as a bare URL - no title, description or image.
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Sibil Sarjam Soren",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: "en_IN",
+    images: [
+      {
+        url: "/avatar.png",
+        width: 819,
+        height: 918,
+        alt: "Sibil Sarjam Soren",
+      },
+    ],
+  },
+  twitter: {
+    // "summary" rather than "summary_large_image": avatar.png is portrait
+    // (819x918) and would be cropped badly in a large card.
+    card: "summary",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/avatar.png"],
   },
 };
 

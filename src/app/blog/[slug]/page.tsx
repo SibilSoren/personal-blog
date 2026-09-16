@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getBlogPostBySlug, getBlogSlugs } from "@/lib/blog"
 import { MDXRemote } from "next-mdx-remote/rsc"
@@ -12,6 +13,43 @@ interface PostPageProps {
   params: Promise<{
     slug: string
   }>
+}
+
+// Per-post metadata. Without this every blog post shared the site-wide title,
+// so all posts looked identical on LinkedIn/Twitter/WhatsApp. Each post's
+// frontmatter already carries title, description and image - use them.
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const post = getBlogPostBySlug(slug)
+
+  if (!post) {
+    return {}
+  }
+
+  const url = `https://sibilsarjamsoren.in/blog/${post.slug}`
+
+  return {
+    title: post.title,
+    description: post.description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      title: post.title,
+      description: post.description,
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt,
+      authors: [post.author],
+      tags: post.tags,
+      images: post.image ? [{ url: post.image, alt: post.title }] : undefined,
+    },
+    twitter: {
+      card: post.image ? "summary_large_image" : "summary",
+      title: post.title,
+      description: post.description,
+      images: post.image ? [post.image] : undefined,
+    },
+  }
 }
 
 export async function generateStaticParams() {
