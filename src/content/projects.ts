@@ -91,6 +91,7 @@ export const projects: Project[] = [
     demo: "https://sibilsoren.github.io/spinner-zilla/",
     npm: "https://www.npmjs.com/package/spinner-zilla",
     icon: Loader,
+    image: "/images/spinner-zilla-thumb.png",
     featured: false,
     status: "shipped",
   },
