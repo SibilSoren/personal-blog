@@ -1,8 +1,24 @@
+import type { Metadata } from "next"
 import { Container } from "@/components/layout/container"
 import { Badge } from "@/components/ui/badge"
-import { Briefcase, GraduationCap, Github, Linkedin, Twitter, Mail } from "lucide-react"
+import { Briefcase, Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld"
+import { absoluteUrl, siteConfig } from "@/config/site"
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Sibil Sarjam Soren — backend engineer in Kolkata, currently Senior Analyst at Accenture. Node.js, TypeScript, PostgreSQL and Redis, with a focus on what systems do when something goes wrong.",
+  alternates: { canonical: absoluteUrl("/about") },
+  openGraph: {
+    type: "profile",
+    url: absoluteUrl("/about"),
+    title: "About | Sibil Sarjam Soren",
+    description: "Backend engineer in Kolkata. Node.js, TypeScript, PostgreSQL and Redis.",
+  },
+}
 
 const experiences = [
   {
@@ -70,6 +86,12 @@ const skills = [
 export default function AboutPage() {
   return (
     <div className="py-20 flex flex-col gap-20">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
       <Container>
         <div className="grid md:grid-cols-[1fr_300px] gap-12 items-start">
           <div className="space-y-8">
@@ -86,25 +108,31 @@ export default function AboutPage() {
                 </div>
                 <div className="space-y-4">
                   <p className="text-xl text-muted-foreground leading-relaxed italic border-l-4 border-primary pl-6 py-2">
-                    "Senior Software Engineer passionate about scalable backend systems and robust distributed architectures."
+                    &ldquo;Most of what I build sits behind an API — caching layers, job
+                    queues, notification pipelines, rate limiters.&rdquo;
                   </p>
                   <div className="prose prose-neutral dark:prose-invert max-w-none">
                     <p>
-                      I'm a Senior Software Engineer with a deep focus on backend development and distributed systems. My expertise spans a wide range of technologies, from architecting scalable Java Spring Boot and NestJS services to designing complex cloud solutions on AWS.
+                      I&apos;m a backend engineer in Kolkata, currently a {siteConfig.jobTitle} at{" "}
+                      {siteConfig.employer}, working in Node.js and TypeScript on a piped natural
+                      gas platform that connects consumers to their regional gas vendors.
                     </p>
                   </div>
                 </div>
               </div>
               <div className="prose prose-neutral dark:prose-invert max-w-none text-lg">
                 <p>
-                   I have extensive experience in building scalable web applications, optimizing database performance, and designing resilient APIs. Whether it's managing cloud infrastructure or implementing efficient state management on the client side, I strive to deliver engineering excellence in every project.
+                   I came into software from mechanical engineering, so I learned this by
+                   building things and breaking them — which is still mostly how I work. I&apos;m
+                   most interested in what a system does when something goes wrong, because that
+                   is usually where the actual design decisions are.
                 </p>
               </div>
             </section>
 
             <section>
               <div className="flex items-center gap-2 mb-8">
-                <Briefcase className="h-6 w-6 text-primary" />
+                <Briefcase className="h-6 w-6 text-primary-text" />
                 <h2 className="text-2xl font-bold">Work Experience</h2>
               </div>
               <div className="space-y-4">
@@ -159,7 +187,7 @@ export default function AboutPage() {
           <aside className="space-y-8 sticky top-24 self-start">
             <div className="bg-muted/30 p-6 rounded-2xl border">
               <h3 className="font-bold mb-4 flex items-center gap-2">
-                <Code className="h-4 w-4 text-primary" /> Skills
+                <Code className="h-4 w-4 text-primary-text" /> Skills
               </h3>
               <div className="space-y-6">
                 {skills.map((skill, index) => (
@@ -167,7 +195,7 @@ export default function AboutPage() {
                     <p className="text-xs uppercase font-bold text-muted-foreground tracking-widest mb-3">{skill.category}</p>
                     <div className="flex flex-wrap gap-2">
                       {skill.items.map(item => (
-                        <Badge key={item} variant="outline" className="bg-background hover:border-primary hover:text-primary transition-colors">{item}</Badge>
+                        <Badge key={item} variant="outline" className="bg-background hover:border-primary hover:text-primary-text transition-colors">{item}</Badge>
                       ))}
                     </div>
                   </div>
@@ -178,13 +206,13 @@ export default function AboutPage() {
             <div className="bg-primary/10 p-6 rounded-2xl border border-primary/20">
               <h3 className="font-bold mb-4">Connect</h3>
               <div className="flex flex-col gap-3">
-                <Link href="https://www.linkedin.com/in/sibilsarjamsoren/" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                <Link href="https://www.linkedin.com/in/sibilsarjamsoren/" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary-text transition-colors">
                   <Linkedin className="h-4 w-4" /> LinkedIn
                 </Link>
-                <Link href="https://github.com/SibilSoren" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                <Link href="https://github.com/SibilSoren" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary-text transition-colors">
                   <Github className="h-4 w-4" /> GitHub
                 </Link>
-                <Link href="mailto:soren.sibilsarjam@gmail.com" className="flex items-center gap-3 text-sm hover:text-primary transition-colors">
+                <Link href="mailto:soren.sibilsarjam@gmail.com" className="flex items-center gap-3 text-sm hover:text-primary-text transition-colors">
                   <Mail className="h-4 w-4" /> Email
                 </Link>
               </div>

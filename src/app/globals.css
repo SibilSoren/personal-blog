@@ -38,6 +38,7 @@ html {
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-text: var(--primary-text);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -72,10 +73,9 @@ html {
   transform: translateZ(0);
 }
 
-.animate-marquee > div,
-.animate-marquee-reverse > div {
-  transform: translateZ(0); /* Force GPU for each item */
-}
+/* Promoting the two animating containers is enough. The previous rule promoted
+   all 60 children to their own compositing layers, which on mobile is a large
+   amount of GPU memory for a decorative band. */
 
 :root {
   --radius: 0.5rem;
@@ -85,8 +85,12 @@ html {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.852 0.199 91.936); /* Yellow/Amber Primary */
+  --primary: oklch(0.852 0.199 91.936); /* Yellow/Amber Primary - backgrounds only in light mode */
   --primary-foreground: oklch(0.145 0 0);
+  /* The amber above is 1.57:1 on white, so it is unreadable as text and nearly
+     invisible as a focus ring. This darker token is 5.03:1 and is what every
+     foreground use (text-primary-text, ring) resolves to in light mode. */
+  --primary-text: oklch(0.54 0.16 92);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -96,7 +100,7 @@ html {
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.852 0.199 91.936);
+  --ring: oklch(0.54 0.16 92);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -121,6 +125,8 @@ html {
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.852 0.199 91.936); /* Yellow/Amber Primary */
   --primary-foreground: oklch(0.145 0 0);
+  /* 12.62:1 on the dark background - readable as-is. */
+  --primary-text: oklch(0.852 0.199 91.936);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -185,4 +191,26 @@ html {
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* A full-width infinite horizontal scroll is the worst case for vestibular
+   sensitivity, and the marquees run for 40s on a loop. Honour the OS setting. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

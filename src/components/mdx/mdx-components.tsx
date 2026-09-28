@@ -1,5 +1,7 @@
 import React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { CodeBlock } from "./code-block"
 
 export const MDXComponents = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
@@ -65,15 +67,22 @@ export const MDXComponents = {
   img: ({
     className,
     alt,
-    ...props
-  }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      className={cn("rounded-md border", className)}
-      alt={alt}
-      {...props}
-    />
-  ),
+    src,
+    width,
+    height,
+  }: React.ImgHTMLAttributes<HTMLImageElement>) => {
+    if (typeof src !== "string") return null
+    return (
+      <Image
+        className={cn("rounded-md border", className)}
+        src={src}
+        alt={alt ?? ""}
+        width={Number(width) || 1024}
+        height={Number(height) || 1024}
+        sizes="(max-width: 768px) 100vw, 768px"
+      />
+    )
+  },
   hr: ({ ...props }) => <hr className="my-4 md:my-8" {...props} />,
   table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
     <div className="my-6 w-full overflow-y-auto">
@@ -104,19 +113,15 @@ export const MDXComponents = {
       {...props}
     />
   ),
-  pre: ({ className, ...props }: React.HTMLAttributes<HTMLPreElement>) => (
-    <pre
-      className={cn(
-        "mb-4 mt-6 overflow-x-auto rounded-lg border bg-zinc-950 p-4 font-mono text-sm text-zinc-50 dark:bg-zinc-900",
-        className
-      )}
-      {...props}
-    />
-  ),
+  pre: CodeBlock,
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       className={cn(
-        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-foreground",
+        "relative font-mono text-sm",
+        // data-language is only present on highlighted blocks, which bring
+        // their own colours from Shiki.
+        !props["data-language" as keyof typeof props] &&
+          "rounded bg-muted px-[0.3rem] py-[0.2rem] font-semibold text-foreground",
         className
       )}
       {...props}

@@ -1,17 +1,39 @@
+import type { Metadata } from "next"
 import { Container } from "@/components/layout/container"
 import { Button } from "@/components/ui/button"
 import { Mail, Linkedin, Twitter, Github, MapPin, ExternalLink, MessageSquare } from "lucide-react"
 import Link from "next/link"
+import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld"
+import { absoluteUrl } from "@/config/site"
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with Sibil Sarjam Soren — backend engineer in Kolkata. Email, LinkedIn, GitHub and YouTube.",
+  alternates: { canonical: absoluteUrl("/contact") },
+  openGraph: {
+    type: "website",
+    url: absoluteUrl("/contact"),
+    title: "Contact | Sibil Sarjam Soren",
+    description: "Get in touch — email, LinkedIn, GitHub and YouTube.",
+  },
+}
 
 export default function ContactPage() {
   return (
     <div className="py-20">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       <Container>
         <div className="max-w-4xl mx-auto">
           <div className="mb-12 text-center md:text-left">
             <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
             <p className="text-xl text-muted-foreground max-w-2xl">
-              I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
+              I&apos;m always open to discussing new projects, creative ideas or opportunities to be part of your visions.
             </p>
           </div>
 
@@ -19,12 +41,12 @@ export default function ContactPage() {
             <div className="space-y-8">
               <div className="flex gap-4 items-start group">
                 <div className="mt-1 bg-primary/10 p-3 rounded-xl border border-primary/20 group-hover:bg-primary/20 transition-colors">
-                  <Mail className="h-6 w-6 text-primary" />
+                  <Mail className="h-6 w-6 text-primary-text" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Email</h3>
                   <p className="text-muted-foreground mb-2">The best way to reach me.</p>
-                  <a href="mailto:soren.sibilsarjam@gmail.com" className="text-primary font-medium hover:underline flex items-center gap-1">
+                  <a href="mailto:soren.sibilsarjam@gmail.com" className="text-primary-text font-medium hover:underline flex items-center gap-1">
                     soren.sibilsarjam@gmail.com <ExternalLink className="h-3 w-3" />
                   </a>
                 </div>
@@ -32,12 +54,12 @@ export default function ContactPage() {
 
               <div className="flex gap-4 items-start group">
                 <div className="mt-1 bg-primary/10 p-3 rounded-xl border border-primary/20 group-hover:bg-primary/20 transition-colors">
-                  <Linkedin className="h-6 w-6 text-primary" />
+                  <Linkedin className="h-6 w-6 text-primary-text" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">LinkedIn</h3>
                   <p className="text-muted-foreground mb-2">For professional networking.</p>
-                  <Link href="https://www.linkedin.com/in/sibilsarjamsoren/" target="_blank" className="text-primary font-medium hover:underline flex items-center gap-1">
+                  <Link href="https://www.linkedin.com/in/sibilsarjamsoren/" target="_blank" className="text-primary-text font-medium hover:underline flex items-center gap-1">
                     Connect on LinkedIn <ExternalLink className="h-3 w-3" />
                   </Link>
                 </div>
@@ -45,7 +67,7 @@ export default function ContactPage() {
 
               <div className="flex gap-4 items-start group">
                 <div className="mt-1 bg-primary/10 p-3 rounded-xl border border-primary/20 group-hover:bg-primary/20 transition-colors">
-                  <MapPin className="h-6 w-6 text-primary" />
+                  <MapPin className="h-6 w-6 text-primary-text" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Location</h3>
@@ -61,9 +83,9 @@ export default function ContactPage() {
 
               <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center mb-6 border border-primary/20 shadow-inner">
                  <div className="absolute inset-0 bg-primary/10 rounded-full animate-ping opacity-20" />
-                 <MessageSquare className="h-10 w-10 text-primary" />
+                 <MessageSquare className="h-10 w-10 text-primary-text" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 relative z-10">Let's create something great.</h3>
+              <h3 className="text-2xl font-bold mb-4 relative z-10">Let&apos;s create something great.</h3>
               <p className="text-muted-foreground mb-8 relative z-10">
                 Currently taking on new projects and looking for interesting collaborations.
               </p>
