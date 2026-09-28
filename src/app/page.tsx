@@ -12,7 +12,7 @@ import { projects } from "@/content/projects";
 import { siteConfig } from "@/config/site";
 
 /**
- * Kept in step with the résumé - the marquee previously advertised AWS,
+ * Kept in step with the resume - the marquee previously advertised AWS,
  * Kubernetes, Terraform, Java, Spring Boot and Kafka, none of which appear
  * there. Icons are served from public/logos/skills rather than skillicons.dev,
  * which was 60 third-party requests on this page alone.
@@ -89,7 +89,7 @@ export default function Home() {
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full">
                 <a href={siteConfig.resume} target="_blank" rel="noreferrer">
-                  <FileDown className="mr-2 h-4 w-4" aria-hidden="true" /> Résumé
+                  <FileDown className="mr-2 h-4 w-4" aria-hidden="true" /> Resume
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full">

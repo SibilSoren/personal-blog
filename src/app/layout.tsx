@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Open_Sans, Roboto_Mono } from "next/font/google"
 import "./globals.css"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -9,14 +9,16 @@ import { JsonLd, personSchema, websiteSchema } from "@/components/seo/json-ld"
 import { getBlogSearchIndex } from "@/lib/blog"
 import { siteConfig } from "@/config/site"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Variable names match the tokens globals.css reads (--font-sans / --font-mono),
+// so next/font's generated families override the plain-name fallbacks on :root.
+const fontSans = Open_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 })
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fontMono = Roboto_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
 })
@@ -34,7 +36,6 @@ export const metadata: Metadata = {
     canonical: "/",
     types: { "application/rss+xml": `${siteConfig.url}/feed.xml` },
   },
-  icons: { icon: "/icon.png" },
   // Without openGraph/twitter, every share of this site on LinkedIn, Twitter,
   // WhatsApp or Slack renders as a bare URL - no title, description or image.
   openGraph: {
@@ -65,7 +66,9 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
+      >
         <JsonLd data={personSchema} />
         <JsonLd data={websiteSchema} />
         <ThemeProvider

@@ -99,10 +99,12 @@ export default function AboutPage() {
               <h1 className="text-4xl font-bold mb-6">About Me</h1>
               <div className="flex flex-col md:flex-row gap-8 items-start mb-8">
                 <div className="w-32 h-32 md:w-48 md:h-48 shrink-0 relative rounded-2xl overflow-hidden border-4 border-primary/20 shadow-xl">
-                  <Image 
-                    src="/avatar.png" 
-                    alt="Sibil Sarjam Soren" 
-                    fill 
+                  <Image
+                    src="/avatar.jpg"
+                    alt="Sibil Sarjam Soren"
+                    fill
+                    sizes="(max-width: 768px) 128px, 192px"
+                    priority
                     className="object-cover"
                   />
                 </div>

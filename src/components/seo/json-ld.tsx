@@ -21,7 +21,7 @@ export const personSchema = {
   "@id": absoluteUrl("/#person"),
   name: siteConfig.name,
   url: siteConfig.url,
-  image: absoluteUrl("/avatar.png"),
+  image: absoluteUrl("/avatar.jpg"),
   email: `mailto:${siteConfig.email}`,
   jobTitle: siteConfig.jobTitle,
   worksFor: { "@type": "Organization", name: siteConfig.employer },

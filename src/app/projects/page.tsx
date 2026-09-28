@@ -148,9 +148,9 @@ export default function ProjectsPage() {
         </div>
         
         {/* Contact CTA */}
-        <div className="mt-24 p-12 bg-zinc-950 rounded-3xl border border-zinc-800 text-center">
-             <h2 className="text-3xl font-bold text-white mb-4">Have a complex problem to solve?</h2>
-             <p className="text-zinc-400 mb-8 max-w-xl mx-auto">I specialize in high-stakes backend architecture and distributed systems. Let&apos;s talk about your next project.</p>
+        <div className="mt-24 p-12 bg-card rounded-3xl border shadow-lg text-center">
+             <h2 className="text-3xl font-bold text-foreground mb-4">Have a complex problem to solve?</h2>
+             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">I specialize in high-stakes backend architecture and distributed systems. Let&apos;s talk about your next project.</p>
              <Button asChild size="lg" className="rounded-full font-bold">
                 <Link href="/contact">Get in Touch <MoveRight className="ml-2 h-4 w-4" /></Link>
              </Button>

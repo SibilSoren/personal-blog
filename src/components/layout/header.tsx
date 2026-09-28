@@ -46,7 +46,7 @@ export function Header({ posts }: HeaderProps) {
         <div className="flex-1 flex justify-start items-center overflow-hidden">
           <Link href="/" className="flex items-center space-x-2 z-50 relative shrink-0" onClick={closeMenu}>
             <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary">
-              <Image src="/avatar.png" alt="" width={40} height={40} className="object-cover" />
+              <Image src="/avatar.jpg" alt="" width={40} height={40} className="object-cover" />
             </div>
             <span className="hidden font-bold sm:inline-block truncate">{siteConfig.name}</span>
           </Link>
@@ -126,7 +126,7 @@ export function Header({ posts }: HeaderProps) {
             <div className="container mx-auto flex h-16 items-center justify-between px-4 border-b">
               <Link href="/" className="flex items-center space-x-2" onClick={closeMenu}>
                 <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-primary">
-                  <Image src="/avatar.png" alt="" width={40} height={40} className="object-cover" />
+                  <Image src="/avatar.jpg" alt="" width={40} height={40} className="object-cover" />
                 </div>
                 <span className="font-bold">{siteConfig.name}</span>
               </Link>
@@ -162,7 +162,7 @@ export function Header({ posts }: HeaderProps) {
                   className="flex items-center gap-3 text-3xl font-bold text-muted-foreground transition-colors hover:text-primary-text"
                 >
                   <FileText className="h-7 w-7" aria-hidden="true" />
-                  Résumé
+                  Resume
                 </a>
               </nav>
 
