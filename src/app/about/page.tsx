@@ -26,7 +26,7 @@ const experiences = [
     logo: "/logos/accenture.png",
     roles: [
       {
-        title: "Senior Software Engineer",
+        title: "Backend Engineer (Senior Analyst)",
         period: "Nov 2024 - Present",
         description: "Leading development of enterprise-scale applications in the Financial and Energy service domains. Architecting robust backend systems using Java Spring Boot and NestJS. Leveraging Kafka for distributed messaging and Splunk for advanced monitoring and observability.",
         tags: ["Java", "Spring Boot", "NestJS", "Kafka", "Splunk", "AWS", "TypeScript"]
