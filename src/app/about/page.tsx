@@ -28,8 +28,8 @@ const experiences = [
       {
         title: "Backend Engineer (Senior Analyst)",
         period: "Nov 2024 - Present",
-        description: "Leading development of enterprise-scale applications in the Financial and Energy service domains. Architecting robust backend systems using Java Spring Boot and NestJS. Leveraging Kafka for distributed messaging and Splunk for advanced monitoring and observability.",
-        tags: ["Java", "Spring Boot", "NestJS", "Kafka", "Splunk", "AWS", "TypeScript"]
+        description: "Backend work on a piped natural gas platform that connects consumers to their regional gas vendors. Node.js and TypeScript services, Redis caching for frequently read configuration data, and Jest test suites wired into the deployment pipeline, with some Next.js and React on the frontend. Runs on Azure.",
+        tags: ["Node.js", "TypeScript", "Redis", "Azure", "Next.js", "React", "Jest"]
       }
     ]
   },
@@ -39,7 +39,7 @@ const experiences = [
     roles: [
       {
         title: "Software Developer",
-        period: "Dec 2023 - Nov 2024",
+        period: "Dec 2023 - Sep 2024",
         description: "Built robust web applications using MongoDB, Express.js, React, and Node.js. Optimized cloud infrastructure on AWS for scalability and cost-efficiency. Spearheaded the development of EvalTech.AI, significantly reducing load times and enhancing user experience through reusable component architecture.",
         tags: ["Node.js", "AWS", "MongoDB", "Express.js", "System Design"]
       }
@@ -78,9 +78,9 @@ const experiences = [
 ]
 
 const skills = [
-  { category: "Backend", items: ["Java", "Spring Boot", "NestJS", "Node.js", "Express", "PostgreSQL", "Kafka", "Redis"] },
+  { category: "Backend", items: ["Node.js", "Express", "NestJS", "PostgreSQL", "Redis", "MongoDB", "GraphQL"] },
   { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux", "Zustand"] },
-  { category: "Tools & DevOps", items: ["AWS", "Docker", "Splunk", "Git", "CI/CD", "System Design"] },
+  { category: "Tools & DevOps", items: ["Azure", "Docker", "Jest", "Git", "CI/CD", "System Design"] },
 ]
 
 export default function AboutPage() {
