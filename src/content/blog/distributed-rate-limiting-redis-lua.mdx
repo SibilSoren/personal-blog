@@ -3,7 +3,7 @@ title: "Designing a Distributed Rate Limiter with Redis Lua Scripts"
 description: "Why single-server rate limiting fails in production, and how to build a resilient, distributed rate limiter using Express, Redis, and Lua."
 image: "/images/gatekeeper-thumb.png"
 publishedAt: "2026-06-12"
-updatedAt: "2026-06-12"
+updatedAt: "2026-11-19"
 author: "Sibil Sarjam Soren"
 isPublished: true
 tags: ["Architecture", "Node.js", "Redis", "Distributed Systems"]
@@ -92,6 +92,8 @@ When building infrastructure, you must assume dependencies will fail. If your Re
 If your rate limiter is built poorly, a Redis failure will cause all requests to fail, bringing down your entire application. This is unacceptable for mission-critical systems.
 
 Gatekeeper is designed with a **fail-open** architecture. If the Redis connection times out or throws an error, Gatekeeper automatically logs the error and allows the request to proceed. It also seamlessly falls back to an in-memory `Map` mechanism until Redis comes back online.
+
+> **Update, November 2026:** When I tested this against a real Redis, it didn't hold up. A Redis that stopped answering hung every request, and the in-memory fallback described here didn't exist until Gatekeeper 2.0.0. [What happened, and how I fixed it](/blog/rate-limiter-fail-open).
 
 ```typescript
 try {

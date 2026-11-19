@@ -1,0 +1,97 @@
+---
+title: "My Rate Limiter's Fail-Open Didn't Fail Open"
+description: "In June I wrote that Gatekeeper fails open when Redis goes down. In November I tested that against a Redis I could kill, pause and starve, and measured what really happened."
+image: "/images/gatekeeper-thumb.png"
+publishedAt: "2026-11-19"
+updatedAt: "2026-11-19"
+author: "Sibil Sarjam Soren"
+isPublished: true
+tags: ["Node.js", "Redis", "Distributed Systems", "Reliability"]
+---
+
+In June I wrote about [Gatekeeper](https://github.com/SibilSoren/gatekeeper), my rate limiting middleware for Express, and how it fails open. If Redis goes down, requests go through instead of the whole API going down with it. The post also said Gatekeeper falls back to counting in memory until Redis is back.
+
+I had tested that with mocks. In November I finally ran it against a real Redis that I could kill, pause and starve. The fail-open held up in one case out of three, and the in-memory fallback didn't exist at all. The code just allowed every request.
+
+---
+
+## How I tested it
+
+Mocks only prove the code you wrote. They can't tell you what ioredis does while it reconnects, or what a Redis that accepts a connection and never replies looks like from the other side. So I set up the real thing.
+
+Each version of Gatekeeper ran from npm in a small Express 5 app, with ioredis 5.11 on its default settings and Valkey 9, a Redis fork, on my laptop. The limit was 5 requests a minute. I sent requests one at a time, gave each one 30 seconds, and timed them while I did four things to Valkey:
+
+- killed it mid-run
+- paused it mid-run with `CLIENT PAUSE`, so connections stay open but nothing gets answered
+- pointed the app at a server that accepts the connection and never says a word
+- pointed it at a port where nothing is listening
+
+## What 1.0.0 actually did
+
+Killing Redis was the case I had in mind when I wrote "fail open", and it mostly worked. The request that was already on its way when Valkey died waited 10.6 seconds, because ioredis queued it while reconnecting and only gave up after its default `maxRetriesPerRequest`. Everything after that went straight through in a few milliseconds. ioredis reported the refused reconnect almost immediately, and Gatekeeper started failing open as soon as it saw the error.
+
+Pausing Redis was a different story. Every request hung until my 30-second cap, and the server that never answers did the same. Nothing errored. ioredis was connected and waiting for a reply, so Gatekeeper's fail-open code never ran. In production that's a Redis stuck on a slow command, an overloaded instance, or a dead host whose connection never gets closed. My rate limiter, whose whole job in that moment was to step aside, took the API down with it.
+
+That's the part I got wrong. I'd written fail-open as a catch block, but a dependency that stops answering doesn't throw. Fail-open needs a time limit.
+
+## The fix in 1.1.0
+
+There were two changes. Before a check, Gatekeeper now looks at the connection's status and skips Redis entirely while ioredis is reconnecting or closed. And every Lua script call races a timer:
+
+```ts
+private async evalWithTimeout(...args: unknown[]): Promise<any> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error('Redis did not answer in time')), this.timeoutMs);
+  });
+  try {
+    return await Promise.race([this.client.eval(...args), timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+```
+
+`timeoutMs` defaults to 500. Against the same paused Redis, each request in 1.1.0 took about half a second and went through. That's still slower than I'd like during a stall, which is why the option exists.
+
+The first connect isn't treated as down. Commands queued while it connects are sent as soon as it's ready, and the timer covers the case where it never is.
+
+## Failing open meant no limit at all
+
+1.1.0 failed open quickly, but open still meant unlimited. After I killed Valkey, it let 7 of 7 requests through a limit of 5. A rate limiter that switches itself off exactly when your infrastructure is struggling isn't much of a safety net.
+
+So 2.0.0 does what the June post said it already did. While Redis is unavailable, each server counts in memory, and when Redis comes back, counting moves back to it. With Valkey killed, 2.0.1 allowed 5 requests and blocked the next 2.
+
+The trade-off is that the limit applies per server during an outage. With three servers and a limit of 100, a client can get 300 requests through until Redis is back. I think an imprecise limit beats no limit. If you disagree, `fallback: false` keeps the old allow-everything behaviour. Changing the default broke existing behaviour, so it went out as 2.0.0.
+
+It also stopped logging a warning on every request. 1.0.0 and 1.1.0 wrote 20 warnings across these tests. 2.0.1 logs once when an outage starts and once when it ends.
+
+## What else a real Redis found
+
+Once the tests ran against a real server, a few smaller bugs showed up too:
+
+- With the sliding window, `Retry-After` pointed up to two windows ahead. I read it from the key's TTL, and the key lives for two windows so the next window can read it.
+- `reset("gk:1.2.3.4")` also deleted the counters for `gk:1.2.3.45`, because it matched on a prefix. It also used `KEYS`, which blocks Redis while it checks every key. It now deletes only that key's counters, and finds them with `SCAN`.
+- The token bucket used each app server's clock, so when two servers disagreed, the fast one handed out tokens early. It now uses Redis's `TIME`.
+
+The part I was most worried about held up. With two servers sharing a limit of 10 and 100 concurrent requests, exactly 10 got through on all three algorithms.
+
+## The numbers
+
+| What Redis does | 1.0.0 | 1.1.0 | 2.0.1 |
+| --- | --- | --- | --- |
+| Healthy | 1–2 ms, limit holds | same | same |
+| Killed mid-run | one request waits 10.6 s, then all 7 allowed | no wait, all 7 allowed | no wait, 5 allowed, then 429 |
+| Paused mid-run | no answer after 30 s | about 0.5 s, allowed | about 0.5 s, still limited |
+| Accepts connections, never answers | no answer after 30 s | about 0.5 s, allowed | about 0.5 s, still limited |
+| Nothing listening | first request 10.6 s, then all allowed | some requests 0.5 s, all allowed | same timing, 5 allowed, then 429 |
+| Logging during an outage | every request | every request | once per outage |
+
+## What I'd tell June me
+
+- Test against the real dependency, and break it in more than one way. Killing it is the kind case.
+- Put a time limit on every call to a dependency that's supposed to be optional.
+- Decide what failing open means for the limit, not only for the request.
+- Don't describe code you haven't written yet. My June post described a fallback that didn't exist until November, and I've added a note to it pointing here.
+
+Gatekeeper 2.0.1 is on npm (`npm i @sibilsoren/gatekeeper`), and the [changelog](https://github.com/SibilSoren/gatekeeper/blob/main/CHANGELOG.md) lists every fix.
