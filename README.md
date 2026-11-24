@@ -9,8 +9,9 @@ Personal site and engineering blog. Live at **[sibilsarjamsoren.in](https://sibi
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) with CSS custom properties
 - **UI**: [shadcn/ui](https://ui.shadcn.com/) primitives, [Lucide](https://lucide.dev/) icons
 - **Content**: [MDX](https://mdxjs.com/) via `next-mdx-remote`, validated with [Zod](https://zod.dev/)
-- **Highlighting**: [Shiki](https://shiki.style/) through `rehype-pretty-code`
-- **Fonts**: [Geist Sans & Mono](https://vercel.com/font)
+- **Highlighting**: [Shiki](https://shiki.style/) through `rehype-pretty-code`, one theme per colour mode
+- **Fonts**: [Barlow, Barlow Condensed](https://fonts.google.com/specimen/Barlow) and [JetBrains Mono](https://www.jetbrains.com/lp/mono/), self-hosted through `next/font`
+- **Theme**: a drafting sheet. Vellum in light mode, a blueprint in dark mode; code in GitHub Light and Night Owl
 
 ## Features
 
