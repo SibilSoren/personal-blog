@@ -58,7 +58,7 @@ export function SpotlightSearch({ posts }: SpotlightSearchProps) {
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label="Search the site"
-        className="flex items-center gap-2 rounded-full border bg-muted/40 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted md:w-40 lg:w-64"
+        className="flex items-center gap-2 rounded-sm border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-ink-line hover:text-foreground md:w-40 lg:w-56"
       >
         <Search className="h-4 w-4" aria-hidden="true" />
         <span className="hidden md:inline-block">Search...</span>

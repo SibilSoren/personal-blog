@@ -8,120 +8,137 @@ html {
   scroll-behavior: smooth;
 }
 
+/*
+ * Drafting sheet theme.
+ *
+ * Light mode is vellum: drafting-blue ink on pale blue-grey paper, with a red
+ * pencil for the one thing on a page that needs noticing. Dark mode is a
+ * blueprint (light lines on Prussian blue) rather than an inverted vellum.
+ *
+ * Token names stay shadcn's so every existing component picks the theme up.
+ * The drafting tokens are new:
+ *   --body      running text, a step softer than headings
+ *   --redline   the red pencil; at most one mark per page
+ *   --ink-line  object lines: the sheet border, title blocks, table rules
+ *   --border    construction lines: card edges, dividers, inputs
+ *   --grid      the paper's grid, only on the frame (header, footer, heroes)
+ *   --code-*    code block ground and edge
+ *
+ * Contrast (WCAG 2.x) for every text pair is in the PR description. All of
+ * them clear AA; the lowest is muted text on a muted fill.
+ */
 :root {
-  --background: oklch(0.9232 0.0026 48.7171);
-  --foreground: oklch(0.2795 0.0368 260.0310);
-  --card: oklch(0.9699 0.0013 106.4238);
-  --card-foreground: oklch(0.2795 0.0368 260.0310);
-  --popover: oklch(0.9699 0.0013 106.4238);
-  --popover-foreground: oklch(0.2795 0.0368 260.0310);
-  --primary: oklch(0.5854 0.2041 277.1173);
-  --primary-foreground: oklch(1.0000 0 0);
-  /* --primary is 3.56:1 on --background, which fails AA for normal text. This
-     is the same hue at a darker lightness - 5.15:1 on the background and
-     5.93:1 on cards - and is what every foreground use resolves to in light
-     mode. --primary itself is still correct for fills and borders. */
-  --primary-text: oklch(0.5000 0.2041 277.1173);
-  --secondary: oklch(0.8687 0.0043 56.3660);
-  --secondary-foreground: oklch(0.4461 0.0263 256.8018);
-  --muted: oklch(0.9232 0.0026 48.7171);
-  /* Darkened from the theme's 0.5510 (3.85:1) to clear AA at 4.78:1. */
-  --muted-foreground: oklch(0.5000 0.0234 264.3637);
-  --accent: oklch(0.9376 0.0260 321.9388);
-  --accent-foreground: oklch(0.3729 0.0306 259.7328);
-  /* Darkened from the theme's 0.6368 (3.00:1) to clear AA at 4.89:1. */
-  --destructive: oklch(0.5200 0.2078 25.3313);
-  --destructive-foreground: oklch(1.0000 0 0);
-  --border: oklch(0.8687 0.0043 56.3660);
-  --input: oklch(0.8687 0.0043 56.3660);
-  --ring: oklch(0.5000 0.2041 277.1173);
-  --chart-1: oklch(0.5854 0.2041 277.1173);
-  --chart-2: oklch(0.5106 0.2301 276.9656);
-  --chart-3: oklch(0.4568 0.2146 277.0229);
-  --chart-4: oklch(0.3984 0.1773 277.3662);
-  --chart-5: oklch(0.3588 0.1354 278.6973);
-  --sidebar: oklch(0.8687 0.0043 56.3660);
-  --sidebar-foreground: oklch(0.2795 0.0368 260.0310);
-  --sidebar-primary: oklch(0.5854 0.2041 277.1173);
-  --sidebar-primary-foreground: oklch(1.0000 0 0);
-  --sidebar-accent: oklch(0.9376 0.0260 321.9388);
-  --sidebar-accent-foreground: oklch(0.3729 0.0306 259.7328);
-  --sidebar-border: oklch(0.8687 0.0043 56.3660);
-  --sidebar-ring: oklch(0.5854 0.2041 277.1173);
-  --font-sans: Open Sans, ui-sans-serif, sans-serif, system-ui;
-  /* Kept from the tweakcn theme, but no serif is loaded: nothing uses font-serif.
-     Add Lora back to layout.tsx before using it, or it falls back to the
-     system serif. */
-  --font-serif: Lora, serif;
-  --font-mono: Roboto Mono, monospace;
-  --radius: 1.25rem;
-  --shadow-x: 2px;
-  --shadow-y: 2px;
-  --shadow-blur: 10px;
-  --shadow-spread: 4px;
-  --shadow-opacity: 0.18;
-  --shadow-color: hsl(240 4% 60%);
-  --shadow-2xs: 2px 2px 10px 4px hsl(240 4% 60% / 0.09);
-  --shadow-xs: 2px 2px 10px 4px hsl(240 4% 60% / 0.09);
-  --shadow-sm: 2px 2px 10px 4px hsl(240 4% 60% / 0.18), 2px 1px 2px 3px hsl(240 4% 60% / 0.18);
-  --shadow: 2px 2px 10px 4px hsl(240 4% 60% / 0.18), 2px 1px 2px 3px hsl(240 4% 60% / 0.18);
-  --shadow-md: 2px 2px 10px 4px hsl(240 4% 60% / 0.18), 2px 2px 4px 3px hsl(240 4% 60% / 0.18);
-  --shadow-lg: 2px 2px 10px 4px hsl(240 4% 60% / 0.18), 2px 4px 6px 3px hsl(240 4% 60% / 0.18);
-  --shadow-xl: 2px 2px 10px 4px hsl(240 4% 60% / 0.18), 2px 8px 10px 3px hsl(240 4% 60% / 0.18);
-  --shadow-2xl: 2px 2px 10px 4px hsl(240 4% 60% / 0.45);
+  --background: #eaf0f4;
+  --foreground: #18212e;
+  --body: #2c394d;
+  --card: #f7fafc;
+  --card-foreground: #18212e;
+  --popover: #f7fafc;
+  --popover-foreground: #18212e;
+  --primary: #1c3b6e;
+  --primary-foreground: #f7fafc;
+  /* Kept as its own token because the old theme needed a darker primary for
+     text. In this theme the ink already reads as text, so they match. */
+  --primary-text: #1c3b6e;
+  --secondary: #dce5ed;
+  --secondary-foreground: #18212e;
+  --muted: #dce5ed;
+  --muted-foreground: #4a5870;
+  --accent: #dce5ed;
+  --accent-foreground: #1c3b6e;
+  --destructive: #b8322a;
+  --destructive-foreground: #ffffff;
+  --redline: #b8322a;
+  --ink-line: #1c3b6e;
+  --border: #a9b8cb;
+  --input: #a9b8cb;
+  --ring: #1c3b6e;
+  --grid: rgb(28 59 110 / 0.07);
+  --code-bg: #f7fafc;
+  --code-border: #a9b8cb;
+  --chart-1: #1c3b6e;
+  --chart-2: #3d6aa8;
+  --chart-3: #6f93c4;
+  --chart-4: #a9b8cb;
+  --chart-5: #b8322a;
+  --sidebar: #dce5ed;
+  --sidebar-foreground: #18212e;
+  --sidebar-primary: #1c3b6e;
+  --sidebar-primary-foreground: #f7fafc;
+  --sidebar-accent: #dce5ed;
+  --sidebar-accent-foreground: #1c3b6e;
+  --sidebar-border: #a9b8cb;
+  --sidebar-ring: #1c3b6e;
+  /* next/font sets these three on <body>; these are the fallbacks. */
+  --font-sans: Barlow, ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius: 2px;
+  /* A drawing has no soft shadows. Anything laid over the page (search,
+     menus) gets a hard offset, like a second sheet on top of the first. */
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 4px 4px 0 0 rgb(28 59 110 / 0.16);
+  --shadow-xl: 4px 4px 0 0 rgb(28 59 110 / 0.16);
+  --shadow-2xl: 6px 6px 0 0 rgb(28 59 110 / 0.2);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
 
 .dark {
-  --background: oklch(0.2244 0.0074 67.4370);
-  --foreground: oklch(0.9288 0.0126 255.5078);
-  --card: oklch(0.2801 0.0080 59.3379);
-  --card-foreground: oklch(0.9288 0.0126 255.5078);
-  --popover: oklch(0.2801 0.0080 59.3379);
-  --popover-foreground: oklch(0.9288 0.0126 255.5078);
-  --primary: oklch(0.6801 0.1583 276.9349);
-  --primary-foreground: oklch(0.2244 0.0074 67.4370);
-  /* 5.75:1 on the dark background - readable as-is, so it matches --primary. */
-  --primary-text: oklch(0.6801 0.1583 276.9349);
-  --secondary: oklch(0.3359 0.0077 59.4197);
-  --secondary-foreground: oklch(0.8717 0.0093 258.3382);
-  --muted: oklch(0.2287 0.0074 67.4469);
-  --muted-foreground: oklch(0.7137 0.0192 261.3246);
-  --accent: oklch(0.3896 0.0074 59.4734);
-  --accent-foreground: oklch(0.8717 0.0093 258.3382);
-  --destructive: oklch(0.6368 0.2078 25.3313);
-  --destructive-foreground: oklch(0.2244 0.0074 67.4370);
-  --border: oklch(0.3359 0.0077 59.4197);
-  --input: oklch(0.3359 0.0077 59.4197);
-  --ring: oklch(0.6801 0.1583 276.9349);
-  --chart-1: oklch(0.6801 0.1583 276.9349);
-  --chart-2: oklch(0.5854 0.2041 277.1173);
-  --chart-3: oklch(0.5106 0.2301 276.9656);
-  --chart-4: oklch(0.4568 0.2146 277.0229);
-  --chart-5: oklch(0.3984 0.1773 277.3662);
-  --sidebar: oklch(0.3359 0.0077 59.4197);
-  --sidebar-foreground: oklch(0.9288 0.0126 255.5078);
-  --sidebar-primary: oklch(0.6801 0.1583 276.9349);
-  --sidebar-primary-foreground: oklch(0.2244 0.0074 67.4370);
-  --sidebar-accent: oklch(0.3896 0.0074 59.4734);
-  --sidebar-accent-foreground: oklch(0.8717 0.0093 258.3382);
-  --sidebar-border: oklch(0.3359 0.0077 59.4197);
-  --sidebar-ring: oklch(0.6801 0.1583 276.9349);
-  --shadow-color: hsl(0 0% 0%);
-  --shadow-2xs: 2px 2px 10px 4px hsl(0 0% 0% / 0.09);
-  --shadow-xs: 2px 2px 10px 4px hsl(0 0% 0% / 0.09);
-  --shadow-sm: 2px 2px 10px 4px hsl(0 0% 0% / 0.18), 2px 1px 2px 3px hsl(0 0% 0% / 0.18);
-  --shadow: 2px 2px 10px 4px hsl(0 0% 0% / 0.18), 2px 1px 2px 3px hsl(0 0% 0% / 0.18);
-  --shadow-md: 2px 2px 10px 4px hsl(0 0% 0% / 0.18), 2px 2px 4px 3px hsl(0 0% 0% / 0.18);
-  --shadow-lg: 2px 2px 10px 4px hsl(0 0% 0% / 0.18), 2px 4px 6px 3px hsl(0 0% 0% / 0.18);
-  --shadow-xl: 2px 2px 10px 4px hsl(0 0% 0% / 0.18), 2px 8px 10px 3px hsl(0 0% 0% / 0.18);
-  --shadow-2xl: 2px 2px 10px 4px hsl(0 0% 0% / 0.45);
+  --background: #0e2a47;
+  --foreground: #eaf2fb;
+  --body: #cddcec;
+  --card: #102f50;
+  --card-foreground: #eaf2fb;
+  --popover: #102f50;
+  --popover-foreground: #eaf2fb;
+  --primary: #bcd8f5;
+  --primary-foreground: #0e2a47;
+  --primary-text: #bcd8f5;
+  --secondary: #16385c;
+  --secondary-foreground: #eaf2fb;
+  --muted: #16385c;
+  --muted-foreground: #93abc6;
+  --accent: #16385c;
+  --accent-foreground: #eaf2fb;
+  --destructive: #ff9f8a;
+  --destructive-foreground: #0e2a47;
+  --redline: #ff9f8a;
+  --ink-line: #bcd8f5;
+  --border: #3d5f86;
+  --input: #3d5f86;
+  --ring: #bcd8f5;
+  --grid: rgb(173 214 255 / 0.09);
+  /* Night Owl's own background, so the code theme sits on the ground it was
+     designed for. */
+  --code-bg: #011627;
+  --code-border: #3d5f86;
+  --chart-1: #bcd8f5;
+  --chart-2: #8fb6e0;
+  --chart-3: #5d88b8;
+  --chart-4: #3d5f86;
+  --chart-5: #ff9f8a;
+  --sidebar: #16385c;
+  --sidebar-foreground: #eaf2fb;
+  --sidebar-primary: #bcd8f5;
+  --sidebar-primary-foreground: #0e2a47;
+  --sidebar-accent: #16385c;
+  --sidebar-accent-foreground: #eaf2fb;
+  --sidebar-border: #3d5f86;
+  --sidebar-ring: #bcd8f5;
+  --shadow-lg: 4px 4px 0 0 rgb(0 0 0 / 0.35);
+  --shadow-xl: 4px 4px 0 0 rgb(0 0 0 / 0.35);
+  --shadow-2xl: 6px 6px 0 0 rgb(0 0 0 / 0.4);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-body: var(--body);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -137,9 +154,13 @@ html {
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-redline: var(--redline);
+  --color-ink-line: var(--ink-line);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-code-bg: var(--code-bg);
+  --color-code-border: var(--code-border);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -155,18 +176,19 @@ html {
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
   --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  /* The site uses rounded-2xl and rounded-3xl; without these they would fall
-     back to Tailwind's defaults and stop tracking --radius. */
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  /* Explicit steps rather than calc(var(--radius) - 4px), which goes negative
+     at a 2px radius. The site uses rounded-2xl and rounded-3xl for cards; on a
+     drawing those stay nearly square. */
+  --radius-sm: 0px;
+  --radius-md: 1px;
+  --radius-lg: 2px;
+  --radius-xl: 3px;
+  --radius-2xl: 4px;
+  --radius-3xl: 4px;
+  --radius-4xl: 4px;
 
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);
@@ -191,6 +213,16 @@ html {
   --animate-marquee-reverse: marquee-reverse 40s linear infinite;
 }
 
+/* Grid paper. Only for the frame: header, footer and page heroes. Text that
+   is read at length sits on a plain panel instead. */
+@utility bg-grid {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
 .animate-marquee,
 .animate-marquee-reverse {
   will-change: transform;
@@ -203,8 +235,17 @@ html {
   * {
     @apply border-border outline-ring/50;
   }
+  /* The sheet sits inset from the window edge; the margin shows this. */
+  html {
+    background-color: var(--background);
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
   }
   pre code {
     background-color: transparent !important;
@@ -218,7 +259,7 @@ html {
 
 @layer utilities {
   .glass {
-    @apply bg-background/60 backdrop-blur-md border border-white/10;
+    @apply bg-background/60 backdrop-blur-md border border-border;
   }
 
   .animate-fade-in {
@@ -260,6 +301,44 @@ html {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Prose takes its colours from @tailwindcss/typography's own grey scale, so
+   posts ignored the theme (and prose-invert put grey text on the blueprint).
+   Pointing the plugin's variables at the theme tokens covers both modes.
+   This is unlayered on purpose: it has to beat both prose-neutral and
+   dark:prose-invert, which live in a cascade layer. */
+.prose {
+  --tw-prose-body: var(--body);
+  --tw-prose-headings: var(--primary-text);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--primary-text);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-kbd: var(--foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-th-borders: var(--ink-line);
+  --tw-prose-td-borders: var(--border);
+}
+
+/* Code blocks carry two Shiki themes, GitHub Light for vellum and Night Owl for
+   the blueprint, as --shiki-light / --shiki-dark on every token. This picks
+   one by colour mode. */
+code[data-theme*=" "],
+code[data-theme*=" "] span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+}
+
+.dark code[data-theme*=" "],
+.dark code[data-theme*=" "] span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
 }
 
 /* @tailwindcss/typography wraps inline code in literal backticks through
