@@ -7,6 +7,7 @@ updatedAt: "2026-11-19"
 author: "Sibil Sarjam Soren"
 isPublished: true
 tags: ["Node.js", "Redis", "Distributed Systems", "Reliability"]
+numberedSections: true
 ---
 
 In June I wrote about [Gatekeeper](https://github.com/SibilSoren/gatekeeper), my rate limiting middleware for Express, and how it fails open. If Redis goes down, requests go through instead of the whole API going down with it. The post also said Gatekeeper falls back to counting in memory until Redis is back.

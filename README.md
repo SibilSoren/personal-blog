@@ -61,8 +61,12 @@ image: "/images/cover.png" # optional
 author: "Sibil Sarjam Soren"
 isPublished: true
 tags: ["Architecture", "Node.js"]
+numberedSections: false   # optional; true numbers the sections 1., 2., 2.1
 ---
 ```
+
+A blockquote that starts with `[!NOTE]` (or `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`)
+renders as the post's red-pencil note. Use one at most per post.
 
 Reading time, the table of contents, tag pages, the sitemap entry and the OG image are
 all derived automatically.

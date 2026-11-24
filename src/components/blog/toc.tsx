@@ -11,11 +11,33 @@ interface TableOfContentsProps {
    * that rehype-slug uses, so these ids always match the rendered anchors.
    */
   headings: Heading[]
+  /** Show section numbers; only for posts with numberedSections in frontmatter. */
+  numbered?: boolean
 }
 
-export function TableOfContents({ headings }: TableOfContentsProps) {
+/**
+ * Section numbers, counted the same way as the CSS counters on .prose-numbered
+ * (h2 is 1, 2, 3; h3 under the second h2 is 2.1, 2.2), so the contents and the
+ * headings in the post always agree.
+ */
+function numberHeadings(headings: Heading[]) {
+  let section = 0
+  let subsection = 0
+  return headings.map((heading) => {
+    if (heading.level === 2) {
+      section += 1
+      subsection = 0
+      return { ...heading, number: `${section}.` }
+    }
+    subsection += 1
+    return { ...heading, number: `${section}.${subsection}` }
+  })
+}
+
+export function TableOfContents({ headings, numbered = false }: TableOfContentsProps) {
   const [activeId, setActiveId] = React.useState<string>("")
   const [isOpen, setIsOpen] = React.useState(true)
+  const items = React.useMemo(() => numberHeadings(headings), [headings])
 
   React.useEffect(() => {
     if (headings.length === 0) return
@@ -42,52 +64,52 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
   if (headings.length === 0) return null
 
   return (
-    <nav
-      aria-labelledby="toc-heading"
-      className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden"
-    >
+    <nav aria-labelledby="toc-heading" className="border border-ink-line bg-card text-card-foreground">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-controls="toc-list"
-        className="flex w-full items-center justify-between px-4 py-3 text-sm font-bold uppercase tracking-wider transition-colors hover:bg-muted/50"
+        className="flex w-full items-center justify-between px-4 py-2.5 transition-colors hover:bg-muted/60"
       >
-        <span id="toc-heading" className="flex items-center gap-2">
-          <ChevronDown
-            aria-hidden="true"
-            className={cn("h-4 w-4 transition-transform", !isOpen && "-rotate-90")}
-          />
-          On this page
+        <span
+          id="toc-heading"
+          className="font-display text-sm font-semibold uppercase tracking-[0.1em] text-primary-text"
+        >
+          Contents
         </span>
+        <ChevronDown
+          aria-hidden="true"
+          className={cn("h-4 w-4 text-muted-foreground transition-transform", !isOpen && "-rotate-90")}
+        />
       </button>
 
       {isOpen && (
-        <div id="toc-list" className="border-t px-2 py-4">
-          <ul className="space-y-1">
-            {headings.map((heading) => (
-              <li
-                key={heading.id}
-                style={{ paddingLeft: `${(heading.level - 2) * 1.5}rem` }}
+        <ol id="toc-list" className="border-t border-ink-line py-2">
+          {items.map((heading) => (
+            <li key={heading.id}>
+              <a
+                href={`#${heading.id}`}
+                aria-current={activeId === heading.id ? "location" : undefined}
+                className={cn(
+                  "grid gap-1 px-4 py-1.5 text-sm leading-snug transition-colors hover:bg-muted/60 hover:text-primary-text",
+                  numbered && "grid-cols-[2.25rem_minmax(0,1fr)]",
+                  heading.level === 3 && (numbered ? "pl-8" : "pl-7"),
+                  // Current section: ink, weight and a fill, so it isn't marked by
+                  // colour alone. Red pencil stays reserved for the post's note.
+                  activeId === heading.id
+                    ? "bg-muted/60 font-semibold text-primary-text"
+                    : "text-muted-foreground"
+                )}
               >
-                <a
-                  href={`#${heading.id}`}
-                  aria-current={activeId === heading.id ? "location" : undefined}
-                  className={cn(
-                    "block rounded-md px-3 py-1.5 text-sm transition-all hover:bg-primary/10 hover:text-primary-text",
-                    activeId === heading.id
-                      ? "bg-primary/10 font-bold text-primary-text"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  <span className="mr-2 opacity-50" aria-hidden="true">
-                    •
-                  </span>
-                  {heading.text}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+                {numbered && (
+                  <span className="font-mono text-xs leading-5 tabular-nums">{heading.number}</span>
+                )}
+                <span>{heading.text}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
       )}
     </nav>
   )

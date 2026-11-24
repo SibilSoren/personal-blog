@@ -324,6 +324,40 @@ html {
   white-space: nowrap;
 }
 
+/* Numbered sections in posts, the way notes on a drawing are numbered. The
+   table of contents counts the same way (toc.tsx), so the two always agree. */
+.prose-numbered {
+  counter-reset: section;
+}
+
+.prose-numbered h2 {
+  counter-increment: section;
+  counter-reset: subsection;
+}
+
+.prose-numbered h3 {
+  counter-increment: subsection;
+}
+
+.prose-numbered h2::before {
+  content: counter(section) ".";
+}
+
+.prose-numbered h3::before {
+  content: counter(section) "." counter(subsection);
+}
+
+.prose-numbered h2::before,
+.prose-numbered h3::before {
+  margin-right: 0.6em;
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted-foreground);
+  vertical-align: 0.1em;
+}
+
 /* Prose takes its colours from @tailwindcss/typography's own grey scale, so
    posts ignored the theme (and prose-invert put grey text on the blueprint).
    Pointing the plugin's variables at the theme tokens covers both modes.

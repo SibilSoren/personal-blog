@@ -22,6 +22,13 @@ export const blogFrontmatterSchema = z.object({
   author: z.string().min(1),
   isPublished: z.boolean(),
   tags: z.array(z.string()).default([]),
+  /**
+   * Number the sections (1., 2., 2.1) in the post and its contents box. Off by
+   * default: several posts number their own headings where the numbers mean
+   * something (the five SOLID principles, the three algorithms), and automatic
+   * numbers would clash with those.
+   */
+  numberedSections: z.boolean().default(false),
 })
 
 export type BlogFrontmatter = z.infer<typeof blogFrontmatterSchema>
