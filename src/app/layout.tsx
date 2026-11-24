@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Open_Sans, Roboto_Mono } from "next/font/google"
+import { Barlow, Barlow_Condensed, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -9,15 +9,25 @@ import { JsonLd, personSchema, websiteSchema } from "@/components/seo/json-ld"
 import { getBlogSearchIndex } from "@/lib/blog"
 import { siteConfig } from "@/config/site"
 
-// Variable names match the tokens globals.css reads (--font-sans / --font-mono),
-// so next/font's generated families override the plain-name fallbacks on :root.
-const fontSans = Open_Sans({
+// Variable names match the tokens globals.css reads (--font-sans, --font-display,
+// --font-mono), so next/font's generated families override the plain-name
+// fallbacks on :root. Barlow is not a variable font, so its weights are listed.
+const fontSans = Barlow({
   variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 })
 
-const fontMono = Roboto_Mono({
+// Drafting lettering: headings, labels and the title block.
+const fontDisplay = Barlow_Condensed({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+})
+
+const fontMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
@@ -67,7 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
+        className={`${fontSans.variable} ${fontDisplay.variable} ${fontMono.variable} font-sans antialiased`}
       >
         <JsonLd data={personSchema} />
         <JsonLd data={websiteSchema} />
