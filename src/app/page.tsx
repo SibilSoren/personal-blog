@@ -148,7 +148,7 @@ export default function Home() {
                 key={project.title}
                 className="group relative h-full border-muted-foreground/10 hover:border-primary/50 transition-all hover:translate-y-[-4px] shadow-none bg-background/50 overflow-hidden border-2 flex flex-col"
               >
-                <div className="aspect-video bg-muted/20 flex items-center justify-center border-b border-muted-foreground/10 group-hover:bg-primary/5 transition-colors relative overflow-hidden">
+                <div className="aspect-[3/2] bg-muted/20 flex items-center justify-center border-b border-muted-foreground/10 group-hover:bg-primary/5 transition-colors relative overflow-hidden">
                   {project.image ? (
                     <Image
                       src={project.image}

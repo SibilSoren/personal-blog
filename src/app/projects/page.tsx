@@ -50,7 +50,10 @@ export default function ProjectsPage() {
             <div key={project.title} className="group relative">
               <div className="flex flex-col lg:flex-row gap-8 items-start">
                 {/* Visual Icon Side */}
-                <div className="w-full lg:w-1/3 aspect-video lg:aspect-square bg-muted/20 border border-muted-foreground/10 rounded-2xl flex items-center justify-center group-hover:border-primary/50 transition-all overflow-hidden relative">
+                {/* 3:2 matches the screenshots (about 1024x694). The old
+                    lg:aspect-square with object-cover cut off both sides, so the
+                    Gatekeeper thumbnail read "ct your API." */}
+                <div className="w-full lg:w-1/3 aspect-[3/2] bg-muted/20 border border-muted-foreground/10 rounded-2xl flex items-center justify-center group-hover:border-primary/50 transition-all overflow-hidden relative">
                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
                    {project.image ? (
                      <Image
