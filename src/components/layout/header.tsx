@@ -13,10 +13,11 @@ import { cn } from "@/lib/utils"
 import { siteConfig, socialLinks } from "@/config/site"
 import { BlogSearchItem } from "@/types/blog"
 
+// No "Home": the name at the top left links there.
 const navItems = [
-  { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Projects", href: "/projects" },
+  { name: "Open source", href: "/open-source" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
 ]
