@@ -93,7 +93,10 @@ export default function RootLayout({
           >
             Skip to content
           </a>
-          <div className="relative flex min-h-screen flex-col">
+          {/* The drawing sheet: a border inset from the window, doubled on wider
+              screens the way a drawing frame is. On a phone it stays a single
+              thin line so it costs almost no width. */}
+          <div className="relative m-1.5 flex min-h-[calc(100vh-0.75rem)] flex-col border border-ink-line sm:m-3 sm:min-h-[calc(100vh-1.5rem)] sm:border-2 sm:outline sm:outline-1 sm:outline-offset-4 sm:outline-ink-line">
             <Header posts={posts} />
             <main id="main" className="flex-1">
               {children}
