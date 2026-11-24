@@ -21,9 +21,10 @@ interface PostPageProps {
 }
 
 const prettyCodeOptions = {
-  // One dark theme in both colour modes: the code container is dark in both,
-  // which keeps the highlighting legible without a second theme's worth of CSS.
-  theme: "github-dark-dimmed",
+  // Both themes are written into the HTML as --shiki-light / --shiki-dark, and
+  // globals.css picks one by colour mode: GitHub Light on vellum, Night Owl on
+  // the blueprint. The block's background comes from --code-bg, not Shiki.
+  theme: { light: "github-light", dark: "night-owl" },
   keepBackground: false,
 } as const
 
