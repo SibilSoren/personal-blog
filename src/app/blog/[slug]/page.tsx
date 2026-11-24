@@ -180,7 +180,12 @@ export default async function PostPage({ params }: PostPageProps) {
                   rehypePlugins: [
                     rehypeSlug,
                     [rehypePrettyCode, prettyCodeOptions],
-                    [rehypeAutolinkHeadings, { behavior: "wrap" }],
+                    [
+                      rehypeAutolinkHeadings,
+                      // The class lets globals.css style these as headings rather
+                      // than as prose links, which are underlined.
+                      { behavior: "wrap", properties: { className: ["heading-anchor"] } },
+                    ],
                   ],
                 },
               }}
