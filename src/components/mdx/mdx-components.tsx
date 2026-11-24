@@ -55,15 +55,40 @@ export const MDXComponents = {
   li: ({ className, ...props }: React.HTMLAttributes<HTMLLIElement>) => (
     <li className={cn("mt-2", className)} {...props} />
   ),
-  blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLQuoteElement>) => (
-    <blockquote
-      className={cn(
-        "mt-6 border-l-4 border-primary pl-6 italic text-muted-foreground",
-        className
-      )}
-      {...props}
-    />
-  ),
+  // A plain blockquote is a quotation: an ink rule, not italics. A GitHub-style
+  // "> [!NOTE]" arrives tagged with data-callout (see remark-note-callouts.ts)
+  // and becomes the post's red-pencil note.
+  blockquote: ({
+    className,
+    children,
+    ...props
+  }: React.HTMLAttributes<HTMLQuoteElement> & { "data-callout"?: string }) => {
+    const callout = props["data-callout"]
+    if (callout) {
+      return (
+        <aside
+          className={cn(
+            "not-prose my-8 border border-dashed border-redline px-4 py-3 text-redline [&_p]:m-0 [&_p]:leading-relaxed",
+            className
+          )}
+          aria-label={callout}
+        >
+          <span className="mb-1 block font-mono text-xs font-bold uppercase tracking-[0.08em]">
+            {callout}
+          </span>
+          <div className="text-[0.95em]">{children}</div>
+        </aside>
+      )
+    }
+    return (
+      <blockquote
+        className={cn("mt-6 border-l-2 border-ink-line pl-5 not-italic text-foreground", className)}
+        {...props}
+      >
+        {children}
+      </blockquote>
+    )
+  },
   img: ({
     className,
     alt,

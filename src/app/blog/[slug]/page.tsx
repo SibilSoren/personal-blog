@@ -15,6 +15,7 @@ import { Container } from "@/components/layout/container"
 import { Badge } from "@/components/ui/badge"
 import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld"
 import { siteConfig, absoluteUrl } from "@/config/site"
+import { remarkNoteCallouts } from "@/lib/mdx/remark-note-callouts"
 
 interface PostPageProps {
   params: Promise<{ slug: string }>
@@ -177,7 +178,7 @@ export default async function PostPage({ params }: PostPageProps) {
               components={MDXComponents}
               options={{
                 mdxOptions: {
-                  remarkPlugins: [remarkGfm],
+                  remarkPlugins: [remarkGfm, remarkNoteCallouts],
                   rehypePlugins: [
                     rehypeSlug,
                     [rehypePrettyCode, prettyCodeOptions],
