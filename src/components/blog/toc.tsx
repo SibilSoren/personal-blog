@@ -57,7 +57,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
             aria-hidden="true"
             className={cn("h-4 w-4 transition-transform", !isOpen && "-rotate-90")}
           />
-          Table Of Content
+          On this page
         </span>
       </button>
 

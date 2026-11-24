@@ -261,3 +261,28 @@ html {
     scroll-behavior: auto !important;
   }
 }
+
+/* @tailwindcss/typography wraps inline code in literal backticks through
+   code::before and ::after. The MDX code component already gives inline code
+   its own background, so the backticks only showed up as stray characters,
+   e.g. `CLIENT PAUSE`. */
+.prose :where(code)::before,
+.prose :where(code)::after {
+  content: none;
+}
+
+/* rehype-autolink-headings wraps every post heading in a link to itself, and
+   prose underlines all links, so each section heading rendered underlined.
+   The link stays (it is the copyable anchor for that section); it just looks
+   like a heading until it is hovered or focused. */
+.prose a.heading-anchor {
+  color: inherit;
+  text-decoration: none;
+}
+
+.prose a.heading-anchor:hover,
+.prose a.heading-anchor:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
