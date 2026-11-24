@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react"
 
 import { getAllTags, getPostsByTag, tagToSlug } from "@/lib/blog"
 import { Container } from "@/components/layout/container"
-import { PostCard } from "@/components/blog/post-card"
+import { PostRegister } from "@/components/blog/post-register"
 import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld"
 import { absoluteUrl } from "@/config/site"
 
@@ -55,7 +55,7 @@ export default async function TagPage({ params }: TagPageProps) {
   const posts = getPostsByTag(tag)
 
   return (
-    <div className="py-20">
+    <div className="pb-24">
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
@@ -63,29 +63,30 @@ export default async function TagPage({ params }: TagPageProps) {
           { name: label, path: `/blog/tags/${tag}` },
         ])}
       />
-      <Container>
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary-text transition-colors mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          All posts
-        </Link>
 
-        <div className="max-w-2xl mb-12">
-          <h1 className="text-4xl font-bold mb-4">
-            Tagged <span className="text-primary-text">{label}</span>
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            {posts.length} {posts.length === 1 ? "post" : "posts"}.
+      <section aria-labelledby="tag-title" className="border-b border-ink-line bg-grid">
+        <Container className="py-12 md:py-16">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-primary-text"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            All posts
+          </Link>
+          <p className="mt-6 font-mono text-xs text-muted-foreground md:text-sm">
+            Tag · {posts.length} {posts.length === 1 ? "post" : "posts"}
           </p>
-        </div>
+          <h1
+            id="tag-title"
+            className="mt-3 font-display text-4xl font-bold uppercase leading-[0.95] tracking-[0.01em] text-primary-text md:text-6xl"
+          >
+            {label}
+          </h1>
+        </Container>
+      </section>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
-        </div>
+      <Container className="mt-12">
+        <PostRegister posts={posts} detailed headingLevel="h2" />
       </Container>
     </div>
   )
