@@ -18,6 +18,14 @@ export const siteConfig = {
   location: "Kolkata, India",
   email: "soren.sibilsarjam@gmail.com",
   resume: "/Sibil_Sarjam_Soren_Resume.pdf",
+  /**
+   * Shown on the contact page under the email address. Set to null to hide it.
+   * Colleagues and recruiters both read this site, so keep it to what you'd
+   * say to either.
+   */
+  availability: "Currently taking on new projects and looking for interesting collaborations." as
+    | string
+    | null,
   links: {
     github: "https://github.com/SibilSoren",
     linkedin: "https://www.linkedin.com/in/sibilsarjamsoren/",
