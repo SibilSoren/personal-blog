@@ -112,3 +112,11 @@ export const projects: Project[] = [
     status: "designed",
   },
 ]
+
+/** Anchor id for a project on /projects, e.g. "gatekeeper-express-rate-limiter". */
+export function projectSlug(project: Pick<Project, "title">): string {
+  return project.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+}

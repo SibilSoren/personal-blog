@@ -8,7 +8,7 @@ import { DimensionLine } from "@/components/drafting/dimension-line"
 import { ContributionTable, formatDay } from "@/components/drafting/contribution-table"
 import { PostRegister } from "@/components/blog/post-register"
 import { getAllBlogPosts } from "@/lib/blog"
-import { projects } from "@/content/projects"
+import { projects, projectSlug } from "@/content/projects"
 import { contributionSummary, getContributions } from "@/content/oss"
 import { siteConfig } from "@/config/site"
 
@@ -47,7 +47,12 @@ function PartsList() {
                 {String(i + 1).padStart(2, "0")}
               </td>
               <td className="border border-ink-line px-3 py-3 align-top font-semibold text-foreground max-sm:border-0 max-sm:p-0">
-                {part.title}
+                <Link
+                  href={`/projects#${projectSlug(part)}`}
+                  className="hover:text-primary-text hover:underline hover:underline-offset-4"
+                >
+                  {part.title}
+                </Link>
               </td>
               <td className="border border-ink-line px-3 py-3 align-top text-body max-sm:col-span-2 max-sm:mt-1 max-sm:border-0 max-sm:p-0">
                 {part.description}

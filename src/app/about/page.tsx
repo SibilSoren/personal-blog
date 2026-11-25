@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
-import { Container } from "@/components/layout/container"
-import { Badge } from "@/components/ui/badge"
-import { Briefcase, Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+
+import { Container } from "@/components/layout/container"
+import { SectionHeading } from "@/components/drafting/section-heading"
 import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld"
 import { absoluteUrl, siteConfig } from "@/config/site"
 
@@ -85,163 +85,152 @@ const skills = [
 
 export default function AboutPage() {
   return (
-    <div className="py-20 flex flex-col gap-20">
+    <div className="pb-24">
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
           { name: "About", path: "/about" },
         ])}
       />
-      <Container>
-        <div className="grid md:grid-cols-[1fr_300px] gap-12 items-start">
-          <div className="space-y-8">
-            <section>
-              <h1 className="text-4xl font-bold mb-6">About Me</h1>
-              <div className="flex flex-col md:flex-row gap-8 items-start mb-8">
-                <div className="w-32 h-32 md:w-48 md:h-48 shrink-0 relative rounded-2xl overflow-hidden border-4 border-primary/20 shadow-xl">
-                  <Image
-                    src="/avatar.jpg"
-                    alt="Sibil Sarjam Soren"
-                    fill
-                    sizes="(max-width: 768px) 128px, 192px"
-                    priority
-                    className="object-cover"
-                  />
-                </div>
-                <div className="space-y-4">
-                  <p className="text-xl text-muted-foreground leading-relaxed italic border-l-4 border-primary pl-6 py-2">
-                    &ldquo;Most of what I build sits behind an API — caching layers, job
-                    queues, notification pipelines, rate limiters.&rdquo;
-                  </p>
-                  <div className="prose prose-neutral dark:prose-invert max-w-none">
-                    <p>
-                      I&apos;m a backend engineer in Kolkata, currently a {siteConfig.jobTitle} at{" "}
-                      {siteConfig.employer}, working in Node.js and TypeScript on a piped natural
-                      gas platform that connects consumers to their regional gas vendors.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="prose prose-neutral dark:prose-invert max-w-none text-lg">
-                <p>
-                   I came into software from mechanical engineering, so I learned this by
-                   building things and breaking them — which is still mostly how I work. I&apos;m
-                   most interested in what a system does when something goes wrong, because that
-                   is usually where the actual design decisions are.
-                </p>
-              </div>
-            </section>
 
-            <section>
-              <div className="flex items-center gap-2 mb-8">
-                <Briefcase className="h-6 w-6 text-primary-text" />
-                <h2 className="text-2xl font-bold">Work Experience</h2>
-              </div>
-              <div className="space-y-4">
-                {experiences.map((exp, index) => (
-                  <div key={index} className="flex gap-4 md:gap-6">
-                    {/* Company Logo Column */}
-                    <div className="flex flex-col items-center">
-                      <div className="w-12 h-12 md:w-14 md:h-14 relative rounded-md overflow-hidden bg-white shadow-sm border shrink-0">
-                         <Image src={exp.logo} alt={exp.company} fill className="object-contain p-1" />
-                      </div>
-                      {/* Vertical line connecting to next company or roles */}
-                      {index !== experiences.length - 1 && (
-                        <div className="w-px h-full bg-border mt-2" />
-                      )}
-                    </div>
-                
-                    {/* Experience Details Column */}
-                    <div className="flex-1 pb-10">
-                      <h3 className="text-lg font-bold">{exp.company}</h3>
-                      
-                      <div className="mt-4 space-y-8">
-                        {exp.roles.map((role, rIndex) => (
-                          <div key={rIndex} className="relative">
-                            {/* Connector for multi-role companies similar to LinkedIn */}
-                            {exp.roles.length > 1 && rIndex !== exp.roles.length - 1 && (
-                                <div className="absolute left-[calc(-1.5rem-1px)] top-[2.5rem] bottom-[-2rem] w-px bg-border md:left-[calc(-2rem-1px)]" />
-                            )}
-                            {exp.roles.length > 1 && (
-                                <div className="absolute left-[calc(-1.5rem-4px)] top-[0.6rem] w-2 h-2 rounded-full bg-muted-foreground/30 md:left-[calc(-2rem-4px)]" />
-                            )}
-                            
-                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
-                              <h4 className="text-base font-semibold leading-tight">{role.title}</h4>
-                              <span className="text-sm text-muted-foreground shrink-0">{role.period}</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{role.description}</p>
-                            <div className="flex flex-wrap gap-2">
-                              {role.tags.map(tag => (
-                                <span key={tag} className="text-[10px] bg-muted px-2 py-0.5 rounded font-medium text-muted-foreground border border-border/50">{tag}</span>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+      <section aria-labelledby="about-title" className="border-b border-ink-line bg-grid">
+        <Container className="grid gap-10 py-14 md:grid-cols-[minmax(0,1fr)_13rem] md:items-start md:py-20">
+          <div className="min-w-0">
+            <p className="font-mono text-xs text-muted-foreground md:text-sm">About</p>
+            <h1
+              id="about-title"
+              className="mt-3 font-display text-5xl font-bold uppercase leading-[0.95] tracking-[0.01em] text-primary-text md:text-6xl"
+            >
+              {siteConfig.name}
+            </h1>
+            <p className="mt-6 max-w-[60ch] text-xl leading-relaxed text-foreground">
+              Most of what I build sits behind an API — caching layers, job queues, notification
+              pipelines, rate limiters.
+            </p>
+            <div className="mt-5 grid max-w-[65ch] gap-4 text-lg leading-relaxed text-body">
+              <p>
+                I&apos;m a backend engineer in Kolkata, currently a {siteConfig.jobTitle} at{" "}
+                {siteConfig.employer}, working in Node.js and TypeScript on a piped natural gas
+                platform that connects consumers to their regional gas vendors.
+              </p>
+              <p>
+                I came into software from mechanical engineering, so I learned this by building
+                things and breaking them — which is still mostly how I work. I&apos;m most
+                interested in what a system does when something goes wrong, because that is usually
+                where the actual design decisions are.
+              </p>
+              <p>
+                Outside work I contribute fixes and features to open source projects such as
+                node-redis and openship. They&apos;re listed on the{" "}
+                <Link
+                  href="/open-source"
+                  className="text-primary-text underline decoration-border underline-offset-4 hover:decoration-primary-text"
+                >
+                  open source
+                </Link>{" "}
+                page.
+              </p>
+            </div>
           </div>
 
-          <aside className="space-y-8 sticky top-24 self-start">
-            <div className="bg-muted/30 p-6 rounded-2xl border">
-              <h3 className="font-bold mb-4 flex items-center gap-2">
-                <Code className="h-4 w-4 text-primary-text" /> Skills
-              </h3>
-              <div className="space-y-6">
-                {skills.map((skill, index) => (
-                  <div key={index}>
-                    <p className="text-xs uppercase font-bold text-muted-foreground tracking-widest mb-3">{skill.category}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {skill.items.map(item => (
-                        <Badge key={item} variant="outline" className="bg-background hover:border-primary hover:text-primary-text transition-colors">{item}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* The photo as a figure on the sheet, with a caption cell under it. */}
+          <figure className="w-40 border border-ink-line bg-card md:w-full">
+            <div className="relative aspect-square">
+              <Image
+                src="/avatar.jpg"
+                alt={siteConfig.name}
+                fill
+                sizes="(max-width: 768px) 160px, 208px"
+                priority
+                className="object-cover"
+              />
             </div>
+            <figcaption className="border-t border-ink-line px-3 py-2 font-mono text-xs text-muted-foreground">
+              {siteConfig.location}
+            </figcaption>
+          </figure>
+        </Container>
+      </section>
 
-            <div className="bg-primary/10 p-6 rounded-2xl border border-primary/20">
-              <h3 className="font-bold mb-4">Connect</h3>
-              <div className="flex flex-col gap-3">
-                <Link href="https://www.linkedin.com/in/sibilsarjamsoren/" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary-text transition-colors">
-                  <Linkedin className="h-4 w-4" /> LinkedIn
-                </Link>
-                <Link href="https://github.com/SibilSoren" target="_blank" className="flex items-center gap-3 text-sm hover:text-primary-text transition-colors">
-                  <Github className="h-4 w-4" /> GitHub
-                </Link>
-                <Link href="mailto:soren.sibilsarjam@gmail.com" className="flex items-center gap-3 text-sm hover:text-primary-text transition-colors">
-                  <Mail className="h-4 w-4" /> Email
-                </Link>
+      <Container className="mt-16 grid gap-20">
+        <section aria-labelledby="experience-heading" className="grid gap-2">
+          <SectionHeading id="experience-heading" title="Experience" caption="Most recent first" />
+          <ol>
+            {experiences.map((exp) => (
+              <li
+                key={exp.company}
+                className="grid gap-4 border-b border-border py-6 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-8"
+              >
+                <div className="flex items-center gap-3 md:items-start">
+                  {/* Logos are drawn for a white ground, so they keep one in both themes. */}
+                  <div className="relative h-11 w-11 shrink-0 overflow-hidden border border-ink-line bg-white">
+                    <Image src={exp.logo} alt="" fill sizes="44px" className="object-contain p-1" />
+                  </div>
+                  <h3 className="font-display text-xl font-semibold text-primary-text">{exp.company}</h3>
+                </div>
+
+                <div className="grid gap-6">
+                  {exp.roles.map((role) => (
+                    <div key={role.title} className="min-w-0">
+                      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                        <h4 className="font-semibold text-foreground">{role.title}</h4>
+                        <span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+                          {role.period}
+                        </span>
+                      </div>
+                      <p className="mt-2 max-w-[70ch] text-sm leading-relaxed text-body">
+                        {role.description}
+                      </p>
+                      <p className="mt-2 font-mono text-[11px] text-muted-foreground">
+                        {role.tags.join(" · ")}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section aria-labelledby="skills-heading" className="grid gap-4">
+          <SectionHeading id="skills-heading" title="Skills" caption="What I work with" />
+          <dl className="border-l border-t border-ink-line">
+            {skills.map((skill) => (
+              <div
+                key={skill.category}
+                className="grid border-b border-r border-ink-line bg-card sm:grid-cols-[12rem_minmax(0,1fr)]"
+              >
+                <dt className="border-ink-line px-3 py-2.5 font-display text-[13px] font-semibold uppercase tracking-[0.08em] text-primary-text sm:border-r">
+                  {skill.category}
+                </dt>
+                <dd className="px-3 pb-2.5 font-mono text-xs leading-6 text-foreground sm:py-2.5">
+                  {skill.items.join(" · ")}
+                </dd>
               </div>
-            </div>
-          </aside>
-        </div>
+            ))}
+          </dl>
+        </section>
+
+        <p className="border-t border-ink-line pt-6 text-sm text-muted-foreground">
+          Email, LinkedIn and the rest are on the{" "}
+          <Link
+            href="/contact"
+            className="text-primary-text underline decoration-border underline-offset-4 hover:decoration-primary-text"
+          >
+            contact
+          </Link>{" "}
+          page, or download the{" "}
+          <a
+            href={siteConfig.resume}
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary-text underline decoration-border underline-offset-4 hover:decoration-primary-text"
+          >
+            resume (PDF)
+          </a>
+          .
+        </p>
       </Container>
     </div>
-  )
-}
-
-function Code({ className }: { className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="24" 
-      height="24" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <polyline points="16 18 22 12 16 6" />
-      <polyline points="8 6 2 12 8 18" />
-    </svg>
   )
 }
