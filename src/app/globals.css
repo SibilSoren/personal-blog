@@ -1,3 +1,8 @@
+/* UI SDK adds the little CSS its behaviours need (hiding closed popups and the
+   like) in a cascade layer named ui-sdk. Declaring it first makes it the
+   lowest layer, so every style on this site wins over it. */
+@layer ui-sdk;
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
