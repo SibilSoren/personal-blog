@@ -83,6 +83,20 @@ export const getAllBlogPosts = cache((): BlogPost[] => {
     )
 })
 
+/**
+ * Each post's doc number: its place in publishing order, oldest first, so the
+ * newest post has the highest number and a post keeps its number when newer
+ * ones are added.
+ */
+export const getDocNumbers = cache((): Map<string, number> => {
+  const oldestFirst = [...getAllBlogPosts()].reverse()
+  return new Map(oldestFirst.map((post, i) => [post.slug, i + 1]))
+})
+
+export function formatDocNumber(n: number | undefined): string {
+  return `Doc ${String(n ?? 0).padStart(2, "0")}`
+}
+
 /** The trimmed shape the client-side search needs - no post bodies. */
 export const getBlogSearchIndex = cache((): BlogSearchItem[] => {
   return getAllBlogPosts().map(({ slug, title, description }) => ({

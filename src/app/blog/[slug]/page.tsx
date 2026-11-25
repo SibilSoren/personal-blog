@@ -6,13 +6,22 @@ import remarkGfm from "remark-gfm"
 import rehypeSlug from "rehype-slug"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import rehypePrettyCode from "rehype-pretty-code"
-import { CalendarDays, Clock, RefreshCw } from "lucide-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 
-import { getBlogPostBySlug, getBlogSlugs, extractHeadings, tagToSlug } from "@/lib/blog"
+import {
+  getBlogPostBySlug,
+  getBlogSlugs,
+  extractHeadings,
+  tagToSlug,
+  getDocNumbers,
+  formatDocNumber,
+} from "@/lib/blog"
+import { remarkNoteCallouts } from "@/lib/mdx/remark-note-callouts"
 import { MDXComponents } from "@/components/mdx/mdx-components"
 import { TableOfContents } from "@/components/blog/toc"
 import { Container } from "@/components/layout/container"
-import { Badge } from "@/components/ui/badge"
+import { formatPostDate } from "@/components/blog/post-register"
+import { cn } from "@/lib/utils"
 import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld"
 import { siteConfig, absoluteUrl } from "@/config/site"
 
@@ -27,14 +36,6 @@ const prettyCodeOptions = {
   theme: { light: "github-light", dark: "night-owl" },
   keepBackground: false,
 } as const
-
-function formatDate(value: string): string {
-  return new Date(value).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  })
-}
 
 // Per-post metadata. Without this every blog post shared the site-wide title,
 // so all posts looked identical on LinkedIn/Twitter/WhatsApp.
@@ -89,6 +90,45 @@ export default async function PostPage({ params }: PostPageProps) {
   const headings = extractHeadings(post.content)
   const url = absoluteUrl(`/blog/${post.slug}`)
   const showUpdated = post.updatedAt && post.updatedAt !== post.publishedAt
+  const doc = formatDocNumber(getDocNumbers().get(post.slug))
+
+  // The post's title block: the same cells a drawing's title block has, in the
+  // order a reader wants them.
+  const docCells: { label: string; value: React.ReactNode }[] = [
+    { label: "Doc", value: doc.replace("Doc ", "") },
+    {
+      label: "Date",
+      value: <time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time>,
+    },
+    ...(showUpdated
+      ? [
+          {
+            label: "Revised",
+            value: <time dateTime={post.updatedAt}>{formatPostDate(post.updatedAt!)}</time>,
+          },
+        ]
+      : []),
+    { label: "Read", value: `${post.readingTime} min` },
+    { label: "By", value: post.author },
+    {
+      label: "Tags",
+      value: (
+        <span className="flex flex-wrap gap-x-2">
+          {post.tags.map((tag, i) => (
+            <span key={tag}>
+              <Link
+                href={`/blog/tags/${tagToSlug(tag)}`}
+                className="underline decoration-border underline-offset-4 hover:text-primary-text hover:decoration-primary-text"
+              >
+                {tag}
+              </Link>
+              {i < post.tags.length - 1 && <span aria-hidden="true"> ·</span>}
+            </span>
+          ))}
+        </span>
+      ),
+    },
+  ]
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -108,7 +148,7 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   return (
-    <article className="py-10">
+    <article className="pb-24">
       <JsonLd data={articleSchema} />
       <JsonLd
         data={breadcrumbSchema([
@@ -118,84 +158,80 @@ export default async function PostPage({ params }: PostPageProps) {
         ])}
       />
 
-      <div className="relative py-20 mb-10 overflow-hidden border-b bg-muted/30">
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-72 h-72 bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
+      <header className="border-b border-ink-line bg-grid">
+        <Container className="py-10 md:py-14">
+          <Link
+            href="/blog"
+            className="flex w-fit items-center gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-primary-text"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            All posts
+          </Link>
 
-        <Container className="relative">
-          <div className="flex flex-wrap gap-2 mb-6">
-            {post.tags.map((tag) => (
-              <Link key={tag} href={`/blog/tags/${tagToSlug(tag)}`}>
-                <Badge className="bg-primary text-primary-foreground hover:bg-primary/90 border-none px-3 py-1 text-xs uppercase tracking-wider font-bold">
-                  {tag}
-                </Badge>
-              </Link>
+          <dl className="mt-6 flex flex-wrap border-l border-t border-ink-line font-mono text-xs text-foreground sm:inline-flex">
+            {docCells.map((cell) => (
+              <div key={cell.label} className="min-w-0 border-b border-r border-ink-line bg-card/60 px-3 py-1.5">
+                <dt className="font-display text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                  {cell.label}
+                </dt>
+                <dd className="mt-0.5">{cell.value}</dd>
+              </div>
             ))}
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight max-w-4xl animate-slide-up">
+          </dl>
+
+          <h1 className="mt-6 max-w-[24ch] font-display text-4xl font-bold uppercase leading-[1] tracking-[0.01em] text-primary-text text-balance md:text-6xl">
             {post.title}
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed animate-slide-up [animation-delay:200ms]">
+          <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-body md:text-xl">
             {post.description}
           </p>
+        </Container>
+      </header>
 
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-10 text-sm font-medium animate-fade-in [animation-delay:400ms]">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
-                <span className="text-primary-text text-xs font-bold" aria-hidden="true">
-                  SS
-                </span>
-              </div>
-              <span className="font-semibold">{post.author}</span>
+      <Container className="mt-10 md:mt-12">
+        {/* The panel is sized to a comfortable line length (about 70 characters),
+            so the text fills it instead of leaving a blank strip on the right. */}
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,49rem)_16rem] lg:gap-10">
+          {/* Long reading happens on a plain panel; the grid paper stays on the frame. */}
+          <div className="min-w-0 border border-ink-line bg-card px-5 py-8 sm:px-10 sm:py-12 max-lg:order-2">
+            <div
+              className={cn(
+                "prose prose-neutral dark:prose-invert max-w-none md:prose-lg",
+                post.numberedSections && "prose-numbered"
+              )}
+            >
+              <MDXRemote
+                source={post.content}
+                components={MDXComponents}
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [remarkGfm, remarkNoteCallouts],
+                    rehypePlugins: [
+                      rehypeSlug,
+                      [rehypePrettyCode, prettyCodeOptions],
+                      [
+                        rehypeAutolinkHeadings,
+                        // The class lets globals.css style these as headings rather
+                        // than as prose links, which are underlined.
+                        { behavior: "wrap", properties: { className: ["heading-anchor"] } },
+                      ],
+                    ],
+                  },
+                }}
+              />
             </div>
 
-            <span className="flex items-center gap-2 text-muted-foreground">
-              <CalendarDays className="h-4 w-4" aria-hidden="true" />
-              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
-            </span>
-
-            <span className="flex items-center gap-2 text-muted-foreground">
-              <Clock className="h-4 w-4" aria-hidden="true" />
-              {post.readingTime} min read
-            </span>
-
-            {showUpdated && (
-              <span className="flex items-center gap-2 text-muted-foreground">
-                <RefreshCw className="h-4 w-4" aria-hidden="true" />
-                Updated <time dateTime={post.updatedAt}>{formatDate(post.updatedAt!)}</time>
-              </span>
-            )}
-          </div>
-        </Container>
-      </div>
-
-      <Container>
-        <div className="flex flex-col lg:flex-row gap-12 relative">
-          <div className="flex-1 prose prose-neutral dark:prose-invert max-w-none order-2 lg:order-1">
-            <MDXRemote
-              source={post.content}
-              components={MDXComponents}
-              options={{
-                mdxOptions: {
-                  remarkPlugins: [remarkGfm],
-                  rehypePlugins: [
-                    rehypeSlug,
-                    [rehypePrettyCode, prettyCodeOptions],
-                    [
-                      rehypeAutolinkHeadings,
-                      // The class lets globals.css style these as headings rather
-                      // than as prose links, which are underlined.
-                      { behavior: "wrap", properties: { className: ["heading-anchor"] } },
-                    ],
-                  ],
-                },
-              }}
-            />
+            <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t-2 border-ink-line pt-4 font-mono text-xs text-muted-foreground">
+              <span>End of {doc.toLowerCase()}</span>
+              <Link href="/blog" className="inline-flex items-center gap-1 text-primary-text hover:underline hover:underline-offset-4">
+                All posts <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
 
-          <aside className="w-full lg:w-[300px] order-1 lg:order-2">
-            <div className="sticky top-24 space-y-8">
-              <TableOfContents headings={headings} />
+          <aside className="max-lg:order-1">
+            <div className="lg:sticky lg:top-24">
+              <TableOfContents headings={headings} numbered={post.numberedSections} />
             </div>
           </aside>
         </div>

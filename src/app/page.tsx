@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { SectionHeading } from "@/components/drafting/section-heading"
 import { DimensionLine } from "@/components/drafting/dimension-line"
 import { ContributionTable, formatDay } from "@/components/drafting/contribution-table"
+import { PostRegister } from "@/components/blog/post-register"
 import { getAllBlogPosts } from "@/lib/blog"
 import { projects } from "@/content/projects"
 import { contributionSummary, getContributions } from "@/content/oss"
@@ -155,35 +156,7 @@ export default function Home() {
             href="/blog"
             linkLabel="All posts"
           />
-          <ol className="border-b border-ink-line">
-            {recent.map((post, i) => (
-              <li
-                key={post.slug}
-                className="grid grid-cols-[4rem_minmax(0,1fr)] gap-x-4 gap-y-1 border-t border-border py-3 first:border-t-0 sm:grid-cols-[4rem_7.5rem_minmax(0,1fr)_auto] sm:items-baseline"
-              >
-                {/* Doc numbers count up in publishing order, so the newest post
-                    has the highest number. */}
-                <span className="font-mono text-xs text-primary-text">
-                  Doc {String(posts.length - i).padStart(2, "0")}
-                </span>
-                <time
-                  dateTime={post.publishedAt}
-                  className="font-mono text-xs tabular-nums text-muted-foreground max-sm:col-start-2 max-sm:row-start-1"
-                >
-                  {formatDay(post.publishedAt)}
-                </time>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="font-medium text-foreground hover:text-primary-text hover:underline hover:underline-offset-4 max-sm:col-start-2"
-                >
-                  {post.title}
-                </Link>
-                <span className="font-mono text-xs text-muted-foreground max-sm:col-start-2">
-                  {post.readingTime} min
-                </span>
-              </li>
-            ))}
-          </ol>
+          <PostRegister posts={recent} />
         </section>
       </Container>
     </div>
