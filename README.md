@@ -7,7 +7,7 @@ Personal site and engineering blog. Live at **[sibilsarjamsoren.in](https://sibi
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Library**: [React 19](https://react.dev/)
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) with CSS custom properties
-- **UI**: [shadcn/ui](https://ui.shadcn.com/) primitives, [Lucide](https://lucide.dev/) icons
+- **UI**: [UI SDK](https://ui-sdk.dev/) for the search and mobile menu dialogs (pinned beta), a shadcn/ui button, [Lucide](https://lucide.dev/) icons
 - **Content**: [MDX](https://mdxjs.com/) via `next-mdx-remote`, validated with [Zod](https://zod.dev/)
 - **Highlighting**: [Shiki](https://shiki.style/) through `rehype-pretty-code`, one theme per colour mode
 - **Fonts**: [Barlow, Barlow Condensed](https://fonts.google.com/specimen/Barlow) and [JetBrains Mono](https://www.jetbrains.com/lp/mono/), self-hosted through `next/font`
@@ -15,17 +15,25 @@ Personal site and engineering blog. Live at **[sibilsarjamsoren.in](https://sibi
 
 ## Features
 
-- **MDX blog** with Zod-validated frontmatter — a malformed post fails the build with the
-  offending filename and field rather than an opaque stack trace.
-- **Syntax highlighting** with per-block language labels and copy-to-clipboard.
+- **Drafting sheet design.** The page sits in a sheet border with a title block in the footer.
+  Projects are a parts list, posts are numbered docs, and one red-pencil mark per page points
+  at the thing to notice.
+- **MDX blog** with Zod-validated frontmatter. A malformed post fails the build with the
+  offending filename and field, not an opaque stack trace.
+- **Post pages** with a title block, a plain reading panel, a contents box, optional section
+  numbers, and `> [!NOTE]` callouts.
+- **Open source page** at `/open-source`, built from `src/content/oss.ts`.
+- **Syntax highlighting** with per-block language labels and copy-to-clipboard, in GitHub Light
+  or Night Owl depending on the colour mode.
 - **Tag archives** at `/blog/tags/[tag]`, generated from frontmatter.
-- **Dynamic OG images** rendered per post with `next/og`.
-- **Structured data** — `Person`, `WebSite`, `BlogPosting` and `BreadcrumbList` JSON-LD.
-- **RSS feed** at `/feed.xml`.
-- **Native sitemap and robots** from `app/sitemap.ts` and `app/robots.ts`, sharing one base URL.
-- **Spotlight search** (`⌘K`) over a trimmed index — post bodies never cross to the client.
-- **Accessible by default** — dialog semantics and focus traps on both modals, a skip link,
-  `prefers-reduced-motion` support, and AA-contrast colour tokens in both themes.
+- **Share images** for the site and for every post, drawn as a blueprint sheet with `next/og`
+  and rendered at build time.
+- **Structured data**: `Person`, `WebSite`, `BlogPosting` and `BreadcrumbList` JSON-LD.
+- **RSS feed** at `/feed.xml`, plus a native sitemap and robots sharing one base URL.
+- **Search** (`⌘K` / `Ctrl+K`) over pages and post titles. Post bodies never reach the client.
+- **Accessible.** Both dialogs trap focus, close on Escape and return focus to their button. There's
+  a skip link, `prefers-reduced-motion` is respected, and every text colour clears WCAG AA in both
+  themes.
 
 ## Getting Started
 
@@ -46,6 +54,18 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run check-links` | Verifies every outbound URL the site advertises still resolves |
 
 CI runs typecheck, lint, build and the link check on every push and pull request.
+
+## Site Settings
+
+`src/config/site.ts` holds the name, title, links, email and resume path. Two settings change
+what visitors see:
+
+- `availability`: the line under the email on `/contact`. Set it to `null` to hide it.
+- `jobTitle` and `employer`: shown in the home page hero, on About and on the share card.
+
+Colours live as tokens at the top of `src/app/globals.css`: light mode (vellum) on `:root`,
+dark mode (blueprint) on `.dark`. The share images use the blueprint values written out in
+`src/lib/og.tsx`, since `next/og` can't read CSS variables.
 
 ## Writing a Post
 
@@ -80,6 +100,9 @@ lists all of them by project. The link check covers every URL in that file.
 ## License & Contribution
 
 Free to use as a base for your own portfolio. If it helps, a ⭐ is appreciated.
+
+The Barlow and Barlow Condensed files in `src/assets/fonts/` are under the SIL Open Font
+License; see `src/assets/fonts/OFL.txt`.
 
 ---
 
