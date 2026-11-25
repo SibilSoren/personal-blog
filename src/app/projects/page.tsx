@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
-import { Container } from "@/components/layout/container";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Github, ExternalLink, MoveRight, CheckCircle2, Package, FileText } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
-import { projects } from "@/content/projects";
-import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
-import { absoluteUrl } from "@/config/site";
+import type { Metadata } from "next"
+import Link from "next/link"
+import Image from "next/image"
+import { ExternalLink } from "lucide-react"
+
+import { Container } from "@/components/layout/container"
+import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld"
+import { projects, projectSlug, type Project } from "@/content/projects"
+import { absoluteUrl } from "@/config/site"
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -21,144 +20,159 @@ export const metadata: Metadata = {
     description:
       "Open-source work — distributed rate limiting, API scaffolding, browser audio, and UI libraries.",
   },
-};
+}
+
+function references(project: Project) {
+  return [
+    project.github && { label: "Code", href: project.github },
+    project.npm && { label: "npm", href: project.npm },
+    project.demo && { label: "Demo", href: project.demo },
+  ].filter((r): r is { label: string; href: string } => Boolean(r))
+}
+
+/** One project laid out like a part sheet: number and title, figure, then the spec. */
+function ProjectSheet({ project, item }: { project: Project; item: number }) {
+  const slug = projectSlug(project)
+  const refs = references(project)
+  const status = project.status === "designed" ? "Design write-up" : "Shipped"
+
+  return (
+    <article id={slug} aria-labelledby={`${slug}-title`} className="scroll-mt-24">
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b-2 border-ink-line pb-2">
+        <div className="min-w-0">
+          <p className="font-mono text-xs text-muted-foreground">
+            Item {String(item).padStart(2, "0")} · {status}
+          </p>
+          <h2
+            id={`${slug}-title`}
+            className="mt-1 font-display text-2xl font-semibold uppercase tracking-[0.04em] text-primary-text md:text-3xl"
+          >
+            {project.title}
+          </h2>
+        </div>
+        {refs.length > 0 && (
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs">
+            {refs.map((ref) => (
+              <li key={ref.label}>
+                <a
+                  href={ref.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-primary-text underline decoration-border underline-offset-4 hover:decoration-primary-text"
+                  aria-label={`${project.title}: ${ref.label}`}
+                >
+                  {ref.label} <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+        <figure className="relative aspect-[3/2] self-start overflow-hidden border border-ink-line bg-card">
+          {project.image ? (
+            <Image
+              src={project.image}
+              alt={`${project.title} screenshot`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-cover"
+            />
+          ) : (
+            // No screenshot yet: a plain drawing frame with the project's icon
+            // rather than an empty box.
+            <div className="flex h-full flex-col items-center justify-center gap-3 bg-grid text-muted-foreground">
+              <project.icon className="h-10 w-10" aria-hidden="true" />
+              <span className="font-mono text-xs">No screenshot</span>
+            </div>
+          )}
+        </figure>
+
+        <div className="min-w-0">
+          <p className="max-w-[65ch] text-base leading-relaxed text-body md:text-lg">
+            {project.longDescription}
+          </p>
+
+          <h3 className="mt-6 font-display text-sm font-semibold uppercase tracking-[0.1em] text-primary-text">
+            Key decisions
+          </h3>
+          <ul className="mt-2 grid gap-x-6 border-t border-border sm:grid-cols-2">
+            {project.architecture.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2 border-b border-border py-2 text-sm text-foreground"
+              >
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-primary-text" aria-hidden="true" />
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-4 font-mono text-xs text-muted-foreground">{project.tech.join(" · ")}</p>
+
+          {project.status === "designed" && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              Architecture write-up, not a shipped service. There is no code to link to.
+            </p>
+          )}
+        </div>
+      </div>
+    </article>
+  )
+}
 
 export default function ProjectsPage() {
   return (
-    <div className="py-20 animate-in fade-in slide-in-from-bottom-5 duration-700">
+    <div className="pb-24">
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
           { name: "Projects", path: "/projects" },
         ])}
       />
-      <Container>
-        <div className="max-w-3xl mb-16">
-          <Badge variant="outline" className="mb-4 text-primary-text bg-primary/10 border-primary/20">
-            Showcase
-          </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
-            Architecting <span className="text-primary-text italic">Systems.</span>
-          </h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            A selection of my professional work and engineering experiments, focused on distributed systems, high-throughput pipelines, and robust backend architectures.
+
+      <section aria-labelledby="projects-title" className="border-b border-ink-line bg-grid">
+        <Container className="py-14 md:py-20">
+          <p className="font-mono text-xs text-muted-foreground md:text-sm">
+            Parts list · {projects.length} entries
           </p>
-        </div>
+          <h1
+            id="projects-title"
+            className="mt-3 font-display text-5xl font-bold uppercase leading-[0.95] tracking-[0.01em] text-primary-text md:text-6xl"
+          >
+            Projects
+          </h1>
+          <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-body">
+            Things I&apos;ve built, mostly because I kept solving the same problem by hand. Each
+            entry covers what it does, the decisions that mattered, and where to find it.
+          </p>
+        </Container>
+      </section>
 
-        <div className="grid gap-12">
-          {projects.map((project, index) => (
-            <div key={project.title} className="group relative">
-              <div className="flex flex-col lg:flex-row gap-8 items-start">
-                {/* Visual Icon Side */}
-                {/* 3:2 matches the screenshots (about 1024x694). The old
-                    lg:aspect-square with object-cover cut off both sides, so the
-                    Gatekeeper thumbnail read "ct your API." */}
-                <div className="w-full lg:w-1/3 aspect-[3/2] bg-muted/20 border border-muted-foreground/10 rounded-2xl flex items-center justify-center group-hover:border-primary/50 transition-all overflow-hidden relative">
-                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
-                   {project.image ? (
-                     <Image
-                       src={project.image}
-                       alt={`${project.title} screenshot`}
-                       fill
-                       sizes="(max-width: 1024px) 100vw, 33vw"
-                       className="object-cover transition-transform duration-500 group-hover:scale-105"
-                     />
-                   ) : (
-                     <project.icon className="w-20 h-20 text-muted-foreground/40 group-hover:text-primary-text group-hover:scale-110 transition-all duration-500 relative z-10" />
-                   )}
-                </div>
+      <Container className="mt-14 grid gap-20">
+        {projects.map((project, i) => (
+          <ProjectSheet key={project.title} project={project} item={i + 1} />
+        ))}
 
-                {/* Content Side */}
-                <div className="flex-1">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.map((t) => (
-                      <Badge key={t} variant="secondary" className="bg-muted/50 text-foreground font-medium">
-                        {t}
-                      </Badge>
-                    ))}
-                  </div>
-                  
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <h2 className="text-3xl font-bold group-hover:text-primary-text transition-colors">
-                      {project.title}
-                    </h2>
-                    {project.status === "designed" && (
-                      <Badge
-                        variant="outline"
-                        className="border-muted-foreground/30 text-muted-foreground font-medium"
-                      >
-                        <FileText className="mr-1.5 h-3 w-3" aria-hidden="true" />
-                        Design write-up
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                    {project.longDescription}
-                  </p>
-
-                  <div className="bg-muted/30 border border-muted-foreground/10 rounded-xl p-6 mb-8">
-                    <h3 className="font-bold text-sm uppercase tracking-wider text-muted-foreground mb-4">
-                      Architecture Highlights
-                    </h3>
-                    <ul className="grid sm:grid-cols-2 gap-3">
-                      {project.architecture.map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm text-foreground/80">
-                          <CheckCircle2 className="h-4 w-4 text-primary-text shrink-0 mt-0.5" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex flex-wrap gap-4">
-                    {project.github && (
-                      <Button asChild variant="default" className="rounded-full px-6">
-                        <Link href={project.github} target="_blank" rel="noreferrer">
-                          <Github className="mr-2 h-4 w-4" aria-hidden="true" /> View Code
-                        </Link>
-                      </Button>
-                    )}
-                    {project.demo && (
-                      <Button asChild variant="outline" className="rounded-full px-6">
-                        <Link href={project.demo} target="_blank" rel="noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" aria-hidden="true" /> Live Demo
-                        </Link>
-                      </Button>
-                    )}
-                    {project.npm && (
-                      <Button asChild variant="outline" className="rounded-full px-6">
-                        <Link href={project.npm} target="_blank" rel="noreferrer">
-                          <Package className="mr-2 h-4 w-4" aria-hidden="true" /> npm
-                        </Link>
-                      </Button>
-                    )}
-                    {project.status === "designed" && (
-                      <p className="text-sm text-muted-foreground self-center">
-                        Architecture write-up — not a shipped service.
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Divider if not last */}
-              {index !== projects.length - 1 && (
-                <div className="h-px bg-muted-foreground/10 w-full mt-12" />
-              )}
-            </div>
-          ))}
-        </div>
-        
-        {/* Contact CTA */}
-        <div className="mt-24 p-12 bg-card rounded-3xl border shadow-lg text-center">
-             <h2 className="text-3xl font-bold text-foreground mb-4">Have a complex problem to solve?</h2>
-             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">I specialize in high-stakes backend architecture and distributed systems. Let&apos;s talk about your next project.</p>
-             <Button asChild size="lg" className="rounded-full font-bold">
-                <Link href="/contact">Get in Touch <MoveRight className="ml-2 h-4 w-4" /></Link>
-             </Button>
-        </div>
+        <p className="border-t border-ink-line pt-6 text-sm text-muted-foreground">
+          Want to talk about one of these?{" "}
+          <Link
+            href="/contact"
+            className="text-primary-text underline decoration-border underline-offset-4 hover:decoration-primary-text"
+          >
+            Get in touch
+          </Link>
+          . Fixes I&apos;ve made to other people&apos;s projects are on the{" "}
+          <Link
+            href="/open-source"
+            className="text-primary-text underline decoration-border underline-offset-4 hover:decoration-primary-text"
+          >
+            open source
+          </Link>{" "}
+          page.
+        </p>
       </Container>
     </div>
-  );
+  )
 }
