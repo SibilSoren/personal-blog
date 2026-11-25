@@ -67,6 +67,12 @@ tags: ["Architecture", "Node.js"]
 Reading time, the table of contents, tag pages, the sitemap entry and the OG image are
 all derived automatically.
 
+## Adding a Merged Pull Request
+
+Add an entry to `src/content/oss.ts` with the full PR URL, a plain-words title, one line on
+what it fixed, and the merge date. The home page shows the five newest and `/open-source`
+lists all of them by project. The link check covers every URL in that file.
+
 ## License & Contribution
 
 Free to use as a base for your own portfolio. If it helps, a ⭐ is appreciated.

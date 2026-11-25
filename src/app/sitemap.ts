@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { getAllBlogPosts, getAllTags, tagToSlug } from "@/lib/blog"
 import { siteConfig, absoluteUrl } from "@/config/site"
+import { getContributions } from "@/content/oss"
 
 /**
  * Replaces scripts/generate-sitemap.mjs, which hardcoded the netlify.app mirror
@@ -21,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: siteConfig.url, changeFrequency: "monthly", priority: 1.0, lastModified: lastPostDate },
     { url: absoluteUrl("/about"), changeFrequency: "yearly", priority: 0.8 },
     { url: absoluteUrl("/projects"), changeFrequency: "monthly", priority: 0.9 },
+    {
+      url: absoluteUrl("/open-source"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+      lastModified: new Date(getContributions()[0]?.mergedAt ?? Date.now()),
+    },
     { url: absoluteUrl("/blog"), changeFrequency: "weekly", priority: 0.8, lastModified: lastPostDate },
     { url: absoluteUrl("/contact"), changeFrequency: "yearly", priority: 0.5 },
   ]

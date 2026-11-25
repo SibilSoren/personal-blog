@@ -198,19 +198,6 @@ html {
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  @keyframes marquee-reverse {
-    from { transform: translateX(-50%); }
-    to { transform: translateX(0); }
-  }
-
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
 }
 
 /* Grid paper. Only for the frame: header, footer and page heroes. Text that
@@ -221,14 +208,6 @@ html {
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 20px 20px;
-}
-
-.animate-marquee,
-.animate-marquee-reverse {
-  will-change: transform;
-  backface-visibility: hidden;
-  perspective: 1000px;
-  transform: translateZ(0);
 }
 
 @layer base {
@@ -281,16 +260,10 @@ html {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* A full-width infinite horizontal scroll is the worst case for vestibular
-   sensitivity, and the marquees run for 40s on a loop. Honour the OS setting. */
+/* Honour the OS setting for reduced motion everywhere. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .animate-marquee,
-  .animate-marquee-reverse {
-    animation: none;
   }
 
   *,
@@ -301,6 +274,54 @@ html {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Dimension line: a red-pencil measurement with extension lines at both ends,
+   arrows, and the figure in the middle. One per page at most. */
+.dimension {
+  position: relative;
+  height: 1rem;
+  border-inline: 1px solid var(--redline);
+}
+
+.dimension::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  border-top: 1px solid var(--redline);
+}
+
+.dimension-arrows::before,
+.dimension-arrows::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 4px);
+  border-block: 4.5px solid transparent;
+}
+
+.dimension-arrows::before {
+  left: 0;
+  border-right: 9px solid var(--redline);
+}
+
+.dimension-arrows::after {
+  right: 0;
+  border-left: 9px solid var(--redline);
+}
+
+.dimension-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding-inline: 0.5rem;
+  background: var(--background);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--redline);
+  white-space: nowrap;
 }
 
 /* Prose takes its colours from @tailwindcss/typography's own grey scale, so

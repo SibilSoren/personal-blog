@@ -11,6 +11,7 @@ import path from "node:path"
 const ROOT = process.cwd()
 const files = [
   "src/content/projects.ts",
+  "src/content/oss.ts",
   "src/config/site.ts",
 ]
 

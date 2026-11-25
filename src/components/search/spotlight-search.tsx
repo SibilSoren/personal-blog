@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Command } from "cmdk"
-import { Search, FileText, User, Mail, Home, FolderGit2 } from "lucide-react"
+import { Search, FileText, User, Mail, Home, FolderGit2, GitPullRequest } from "lucide-react"
 import { useModalBehavior } from "@/hooks/use-modal-behavior"
 import { BlogSearchItem } from "@/types/blog"
 
@@ -19,6 +19,7 @@ const PAGES = [
   { value: "page-home", href: "/", label: "Home", icon: Home },
   { value: "page-about", href: "/about", label: "About", icon: User },
   { value: "page-projects", href: "/projects", label: "Projects", icon: FolderGit2 },
+  { value: "page-open-source", href: "/open-source", label: "Open source", icon: GitPullRequest },
   { value: "page-contact", href: "/contact", label: "Contact", icon: Mail },
 ]
 
